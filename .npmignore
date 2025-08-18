@@ -1,0 +1,47 @@
+# Development files
+src/
+docs/
+public/
+node_modules/
+.vscode/
+.idea/
+*.log
+*.lock
+
+# Config files
+vite.config.ts
+tsconfig.json
+index.html
+env.d.ts
+.gitignore
+.eslintrc.*
+
+# Development and testing
+vitest.config.ts
+jest.config.js
+cypress.config.js
+playwright.config.js
+*.spec.ts
+*.test.ts
+__tests__/
+tests/
+coverage/
+
+# Build artifacts (not needed in npm)
+.vite/
+.nuxt/
+.output/
+.cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp

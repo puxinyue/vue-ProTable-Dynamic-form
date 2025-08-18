@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Form 提示功能测试</title>
+  <link rel="stylesheet" href="https://unpkg.com/ant-design-vue@4.0.0/dist/reset.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #1890ff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .test-section {
+      margin-bottom: 40px;
+      padding: 20px;
+      border: 1px solid #e8e8e8;
+      border-radius: 6px;
+    }
+    .test-section h3 {
+      color: #333;
+      margin-bottom: 15px;
+    }
+    .test-section p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💡 Dynamic Form 提示功能测试</h1>
+    
+    <div class="test-section">
+      <h3>📝 简单文本提示测试</h3>
+      <p>鼠标悬停在问号图标上查看提示信息</p>
+      <div id="simple-tooltip-test"></div>
+    </div>
+    
+    <div class="test-section">
+      <h3>🔧 高级配置提示测试</h3>
+      <p>不同位置和样式的提示效果</p>
+      <div id="advanced-tooltip-test"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+    import { SimpleForm } from './dist/dynamic-form.es.js'
+    
+    const app = createApp({
+      template: `
+        <div>
+          <SimpleForm
+            v-model="formData"
+            :schema="schema"
+            @change="handleChange"
+          />
+          <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+            <h4>表单数据:</h4>
+            <pre>{{ JSON.stringify(formData, null, 2) }}</pre>
+          </div>
+        </div>
+      `,
+      data() {
+        return {
+          formData: {},
+          schema: {
+            fields: [
+              {
+                name: 'username',
+                type: 'input',
+                label: '用户名',
+                placeholder: '请输入用户名',
+                tooltip: '用户名用于登录系统，建议使用字母、数字和下划线的组合',
+                rules: [{ required: true, message: '用户名为必填项' }]
+              },
+              {
+                name: 'email',
+                type: 'input',
+                label: '邮箱地址',
+                placeholder: '请输入邮箱地址',
+                tooltip: {
+                  title: '邮箱地址将用于接收重要通知和找回密码',
+                  placement: 'right',
+                  color: '#52c41a'
+                },
+                rules: [
+                  { required: true, message: '邮箱为必填项' },
+                  {
+                    validator: (value) => {
+                      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                      return emailRegex.test(value) || '请输入有效的邮箱地址'
+                    }
+                  }
+                ]
+              },
+              {
+                name: 'projectType',
+                type: 'select',
+                label: '项目类型',
+                placeholder: '请选择项目类型',
+                tooltip: {
+                  title: '选择项目类型将影响后续的配置选项和功能模块',
+                  placement: 'bottom',
+                  color: '#1890ff'
+                },
+                options: [
+                  { label: 'Web应用', value: 'web' },
+                  { label: '移动应用', value: 'mobile' },
+                  { label: '桌面应用', value: 'desktop' }
+                ],
+                rules: [{ required: true, message: '请选择项目类型' }]
+              }
+            ]
+          }
+        }
+      },
+      methods: {
+        handleChange(data) {
+          console.log('表单数据变化:', data)
+        }
+      }
+    })
+    
+    app.component('SimpleForm', SimpleForm)
+    app.mount('#simple-tooltip-test')
+  </script>
+</body>
+</html>

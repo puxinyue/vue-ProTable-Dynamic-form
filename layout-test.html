@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>动态表单布局测试</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 20px;
+      background: #f5f5f5;
+    }
+    
+    .test-section {
+      background: white;
+      margin-bottom: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .test-section h3 {
+      margin-top: 0;
+      color: #1890ff;
+      border-bottom: 2px solid #1890ff;
+      padding-bottom: 10px;
+    }
+    
+    .form-demo {
+      margin-top: 20px;
+    }
+    
+    /* 基础样式 */
+    .simple-form {
+      width: 100%;
+    }
+    
+    .simple-form-item {
+      margin-bottom: 16px;
+    }
+    
+    .simple-form-item-label {
+      margin-bottom: 4px;
+      font-size: 14px;
+      color: #262626;
+    }
+    
+    .simple-form-item-label.required::before {
+      content: '*';
+      color: #ff4d4f;
+      margin-right: 4px;
+    }
+    
+    .simple-form-item-control {
+      width: 100%;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #1890ff;
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    }
+    
+    /* 水平布局 */
+    .simple-form-horizontal .simple-form-fields {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .simple-form-horizontal .simple-form-fields .simple-form-item {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    /* 内联布局 */
+    .simple-form-inline .simple-form-fields {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-end;
+    }
+    
+    .simple-form-inline .simple-form-fields .simple-form-item {
+      flex: 0 0 auto;
+      margin-bottom: 0;
+    }
+    
+    .simple-form-inline .simple-form-fields .simple-form-item .simple-form-item-label {
+      display: inline-block;
+      margin-right: 8px;
+      margin-bottom: 0;
+      white-space: nowrap;
+    }
+    
+    .simple-form-inline .simple-form-fields .simple-form-item .simple-form-item-control {
+      display: inline-block;
+      vertical-align: top;
+    }
+    
+    /* 网格布局 */
+    .simple-form-grid .simple-form-fields {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    
+    /* 按钮样式 */
+    .simple-form-actions {
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      justify-content: flex-start;
+    }
+    
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    .btn-primary {
+      background: #1890ff;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #096dd9;
+    }
+    
+    .btn-default {
+      background: #f5f5f5;
+      color: #262626;
+      border: 1px solid #d9d9d9;
+    }
+    
+    .btn-default:hover {
+      background: #e6f7ff;
+      border-color: #1890ff;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 动态表单布局功能测试</h1>
+  
+  <div class="test-section">
+    <h3>1. 垂直布局（默认）</h3>
+    <div class="form-demo">
+      <div class="simple-form simple-form-vertical">
+        <div class="simple-form-fields simple-form-fields-vertical">
+          <div class="simple-form-item">
+            <div class="simple-form-item-label required">姓名</div>
+            <div class="simple-form-item-control">
+              <input type="text" placeholder="请输入姓名" />
+            </div>
+          </div>
+          <div class="simple-form-item">
+            <div class="simple-form-item-label">年龄</div>
+            <div class="simple-form-item-control">
+              <input type="number" placeholder="请输入年龄" />
+            </div>
+          </div>
+          <div class="simple-form-item">
+            <div class="simple-form-item-label">邮箱</div>
+            <div class="simple-form-item-control">
+              <input type="email" placeholder="请输入邮箱" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="test-section">
+    <h3>2. 水平布局</h3>
+    <div class="form-demo">
+      <div class="simple-form simple-form-horizontal">
+        <div class="simple-form-fields simple-form-fields-horizontal">
+          <div class="simple-form-item">
+            <div class="simple-form-item-label required">用户名</div>
+            <div class="simple-form-item-control">
+              <input type="text" placeholder="请输入用户名" />
+            </div>
+          </div>
+          <div class="simple-form-item">
+            <div class="simple-form-item-label">密码</div>
+            <div class="simple-form-item-control">
+              <input type="password" placeholder="请输入密码" />
+            </div>
+          </div>
+          <div class="simple-form-item">
+            <div class="simple-form-item-label">角色</div>
+            <div class="simple-form-item-control">
+              <select>
+                <option value="">请选择角色</option>
+                <option value="admin">管理员</option>
+                <option value="user">用户</option>
+                <option value="guest">访客</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="test-section">
+    <h3>3. 内联布局</h3>
+    <div class="form-demo">
+      <div class="simple-form simple-form-inline">
+        <div class="simple-form-fields simple-form-fields-inline">
+          <div class="simple-form-item">
+            <div class="simple-form-item-label">关键词</div>
+            <div class="simple-form-item-control">
+              <input type="text" placeholder="搜索关键词" style="width: 200px;" />
+            </div>
+          </div>
+          <div class="simple-form-item">
+            <div class="simple-form-item-label">分类</div>
+            <div class="simple-form-item-control">
+              <select style="width: 150px;">
+                <option value="">选择分类</option>
+                <option value="tech">技术</option>
+                <option value="life">生活</option>
+                <option value="work">工作</option>
+              </select>
+            </div>
+          </div>
+          <div class="simple-form-item">
+            <div class="simple-form-item-control">
+              <button class="btn-primary">搜索</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="test-section">
+    <h3>4. 网格布局</h3>
+    <div class="form-demo">
+      <div class="simple-form simple-form-grid">
+        <div class="simple-form-fields simple-form-fields-grid">
+          <div class="simple-form-item">
+            <div class="simple-form-item-label">名</div>
+            <div class="simple-form-item-control">
+              <input type="text" placeholder="请输入名" />
+            </div>
+          </div>
+          <div class="simple-form-item">
+            <div class="simple-form-item-label">姓</div>
+            <div class="simple-form-item-control">
+              <input type="text" placeholder="请输入姓" />
+            </div>
+          </div>
+          <div class="simple-form-item">
+            <div class="simple-form-item-label">电话</div>
+            <div class="simple-form-item-control">
+              <input type="tel" placeholder="请输入电话号码" />
+            </div>
+          </div>
+          <div class="simple-form-item">
+            <div class="simple-form-item-label">地址</div>
+            <div class="simple-form-item-control">
+              <textarea placeholder="请输入详细地址" rows="2"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="test-section">
+    <h3>✅ 布局功能测试总结</h3>
+    <div class="form-demo">
+      <p><strong>已实现的布局功能：</strong></p>
+      <ul>
+        <li>✅ 垂直布局（vertical）- 表单字段垂直排列，默认布局</li>
+        <li>✅ 水平布局（horizontal）- 表单字段水平排列，适用于桌面端</li>
+        <li>✅ 内联布局（inline）- 紧凑的内联布局，适用于搜索表单</li>
+        <li>✅ 网格布局（grid）- 自适应网格布局，支持响应式</li>
+        <li>✅ 栅格系统 - 支持24栅格系统配置</li>
+        <li>✅ 响应式布局 - 支持不同屏幕尺寸的断点配置</li>
+        <li>✅ 字段级布局 - 支持单个字段的布局配置</li>
+      </ul>
+      
+      <p><strong>主要特性：</strong></p>
+      <ul>
+        <li>🎯 类型安全：完整的TypeScript类型定义</li>
+        <li>🎨 灵活配置：支持表单级和字段级布局配置</li>
+        <li>📱 响应式：支持移动端和桌面端自适应</li>
+        <li>🔧 易用性：简洁的API设计，易于集成和使用</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

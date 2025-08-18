@@ -1,0 +1,32 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+    "src/index.ts",
+    "src/components/**/*",
+    "src/composables/**/*",
+    "src/types/**/*", 
+    "src/utils/**/*"
+  ],
+  "exclude": [
+    "src/App.vue",
+    "src/main.ts",
+    "src/examples/**/*",
+    "src/**/__tests__/*",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts"
+  ],
+  "compilerOptions": {
+    "composite": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "declaration": true,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "skipLibCheck": true
+  }
+}
