@@ -3,7 +3,9 @@
     <!-- 页面标题 -->
     <div class="page-header">
       <h2>🎨 自定义组件示例</h2>
-      <p class="page-description">探索动态表单中自定义组件的三种使用方式，掌握灵活的组件扩展技巧</p>
+      <p class="page-description">
+        探索动态表单中自定义组件的三种使用方式，掌握灵活的组件扩展技巧
+      </p>
     </div>
 
     <!-- 目录导航 -->
@@ -30,29 +32,40 @@
     <!-- 主要内容区域 -->
     <div class="main-content">
       <!-- 快速概览 -->
-      <section id="overview" class="content-section">
+      <section
+        id="overview"
+        class="content-section"
+      >
         <div class="section-header">
           <h3>⚡ 快速概览</h3>
           <p>通过这个示例，您将学会自定义组件的创建和使用</p>
         </div>
         <div class="overview-grid">
           <div class="overview-card">
-            <div class="card-icon">✨</div>
+            <div class="card-icon">
+              ✨
+            </div>
             <h4>创建自定义组件</h4>
             <p>如评分组件、颜色选择器等</p>
           </div>
           <div class="overview-card">
-            <div class="card-icon">🔧</div>
+            <div class="card-icon">
+              🔧
+            </div>
             <h4>三种注册方式</h4>
             <p>全局注册、实例注册、直接指定</p>
           </div>
           <div class="overview-card">
-            <div class="card-icon">🎯</div>
+            <div class="card-icon">
+              🎯
+            </div>
             <h4>实际应用场景</h4>
             <p>联动效果、动态管理、属性传递</p>
           </div>
           <div class="overview-card">
-            <div class="card-icon">📚</div>
+            <div class="card-icon">
+              📚
+            </div>
             <h4>最佳实践</h4>
             <p>如何选择合适的使用方式</p>
           </div>
@@ -60,7 +73,10 @@
       </section>
 
       <!-- 实际演示 -->
-      <section id="demo" class="content-section">
+      <section
+        id="demo"
+        class="content-section"
+      >
         <div class="section-header">
           <h3>🎯 实际演示</h3>
           <p>以下表单展示了三种自定义组件的使用方式，您可以直接交互体验效果</p>
@@ -110,7 +126,10 @@
       </section>
 
       <!-- 使用方式详解 -->
-      <section id="methods" class="content-section">
+      <section
+        id="methods"
+        class="content-section"
+      >
         <div class="section-header">
           <h3>📋 三种使用方式详解</h3>
           <p>根据不同的应用场景，选择最合适的组件注册方式</p>
@@ -122,7 +141,9 @@
               <h4>全局注册</h4>
               <span class="method-badge">推荐</span>
             </div>
-            <p class="method-desc">一次注册，全项目可用</p>
+            <p class="method-desc">
+              一次注册，全项目可用
+            </p>
             <div class="method-pros">
               <h5>✅ 优点</h5>
               <ul>
@@ -150,7 +171,9 @@
               <h4>实例注册</h4>
               <span class="method-badge">作用域</span>
             </div>
-            <p class="method-desc">仅在当前表单实例生效</p>
+            <p class="method-desc">
+              仅在当前表单实例生效
+            </p>
             <div class="method-pros">
               <h5>✅ 优点</h5>
               <ul>
@@ -178,7 +201,9 @@
               <h4>直接指定</h4>
               <span class="method-badge">灵活</span>
             </div>
-            <p class="method-desc">在字段配置中直接指定组件</p>
+            <p class="method-desc">
+              在字段配置中直接指定组件
+            </p>
             <div class="method-pros">
               <h5>✅ 优点</h5>
               <ul>
@@ -203,7 +228,10 @@
       </section>
 
       <!-- 代码示例 -->
-      <section id="code" class="content-section">
+      <section
+        id="code"
+        class="content-section"
+      >
         <div class="section-header">
           <h3>💻 代码示例</h3>
           <p>查看不同注册方式的具体实现代码</p>
@@ -221,7 +249,10 @@
             </button>
           </div>
           <div class="tab-content">
-            <div v-show="activeTab === 'global'" class="code-example">
+            <div
+              v-show="activeTab === 'global'"
+              class="code-example"
+            >
               <h4>🌐 全局注册方式</h4>
               <pre><code>// 1. 导入组件和注册器
 import { globalComponentRegistry } from '@/utils/componentRegistry'
@@ -243,7 +274,10 @@ const schema = {
   ]
 }</code></pre>
             </div>
-            <div v-show="activeTab === 'instance'" class="code-example">
+            <div
+              v-show="activeTab === 'instance'"
+              class="code-example"
+            >
               <h4>🏠 实例注册方式</h4>
               <pre><code>// 1. 获取表单实例引用
 const formRef = ref()
@@ -267,7 +301,10 @@ const schema = {
   ]
 }</code></pre>
             </div>
-            <div v-show="activeTab === 'inline'" class="code-example">
+            <div
+              v-show="activeTab === 'inline'"
+              class="code-example"
+            >
               <h4>⚡ 直接指定方式</h4>
               <pre><code>// 1. 导入组件
 import CustomRatingField from '@/components/fields/CustomRatingField.vue'
@@ -293,7 +330,10 @@ const schema = {
       </section>
 
       <!-- 动态组件管理 -->
-      <section id="management" class="content-section">
+      <section
+        id="management"
+        class="content-section"
+      >
         <div class="section-header">
           <h3>🎛️ 动态组件管理</h3>
           <p>实例级注册的强大之处在于可以动态控制组件的注册和注销</p>
@@ -336,14 +376,24 @@ const schema = {
           <div class="management-demo">
             <div class="demo-controls">
               <div class="control-info">
-                <p class="current-status">当前状态：<span class="status-highlight">"主题颜色"字段使用实例级注册的组件"</span></p>
-                <p class="tip">💡 尝试注销组件，观察下方表单中"主题颜色"字段的变化</p>
+                <p class="current-status">
+                  当前状态：<span class="status-highlight">"主题颜色"字段使用实例级注册的组件"</span>
+                </p>
+                <p class="tip">
+                  💡 尝试注销组件，观察下方表单中"主题颜色"字段的变化
+                </p>
               </div>
               <div class="control-buttons">
-                <a-button type="primary" @click="registerInstanceComponents">
+                <a-button
+                  type="primary"
+                  @click="registerInstanceComponents"
+                >
                   🔧 重新注册组件
                 </a-button>
-                <a-button danger @click="unregisterInstanceComponents">
+                <a-button
+                  danger
+                  @click="unregisterInstanceComponents"
+                >
                   🗑️ 注销组件（观察效果）
                 </a-button>
               </div>
@@ -353,7 +403,10 @@ const schema = {
               <div class="result-grid">
                 <div class="result-item">
                   <span class="result-label">主题颜色字段：</span>
-                  <span class="result-status" :class="{ error: !isColorComponentRegistered }">
+                  <span
+                    class="result-status"
+                    :class="{ error: !isColorComponentRegistered }"
+                  >
                     {{ isColorComponentRegistered ? '✅ 正常显示颜色选择器' : '❌ 显示"不支持的字段类型"错误' }}
                   </span>
                 </div>
@@ -368,14 +421,19 @@ const schema = {
       </section>
 
       <!-- 进阶技巧 -->
-      <section id="advanced" class="content-section">
+      <section
+        id="advanced"
+        class="content-section"
+      >
         <div class="section-header">
           <h3>💡 进阶技巧与最佳实践</h3>
           <p>掌握组件设计和性能优化的关键要点</p>
         </div>
         <div class="advanced-grid">
           <div class="advanced-card">
-            <div class="advanced-icon">🏗️</div>
+            <div class="advanced-icon">
+              🏗️
+            </div>
             <h4>组件设计原则</h4>
             <ul>
               <li>保持组件的单一职责</li>
@@ -385,7 +443,9 @@ const schema = {
             </ul>
           </div>
           <div class="advanced-card">
-            <div class="advanced-icon">⚡</div>
+            <div class="advanced-icon">
+              ⚡
+            </div>
             <h4>性能优化</h4>
             <ul>
               <li>使用懒加载减少初始包大小</li>
@@ -395,7 +455,9 @@ const schema = {
             </ul>
           </div>
           <div class="advanced-card">
-            <div class="advanced-icon">🔧</div>
+            <div class="advanced-icon">
+              🔧
+            </div>
             <h4>调试技巧</h4>
             <ul>
               <li>使用Vue DevTools检查组件状态</li>
@@ -408,17 +470,28 @@ const schema = {
       </section>
 
       <!-- 高级用法 -->
-      <section id="advanced-usage" class="content-section">
+      <section
+        id="advanced-usage"
+        class="content-section"
+      >
         <div class="section-header">
           <h3>🚀 高级用法：自定义组件与联动效果</h3>
           <p>自定义组件可以与表单的联动功能完美结合，创造出丰富的交互体验</p>
         </div>
         <div class="advanced-usage-content">
           <div class="usage-features">
-            <div class="feature-item">🔗 条件显示</div>
-            <div class="feature-item">🎨 动态样式</div>
-            <div class="feature-item">📊 实时计算</div>
-            <div class="feature-item">🔄 级联更新</div>
+            <div class="feature-item">
+              🔗 条件显示
+            </div>
+            <div class="feature-item">
+              🎨 动态样式
+            </div>
+            <div class="feature-item">
+              📊 实时计算
+            </div>
+            <div class="feature-item">
+              🔄 级联更新
+            </div>
           </div>
           
           <div class="advanced-form-demo">

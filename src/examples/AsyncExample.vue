@@ -8,10 +8,18 @@
     <div class="example-content">
       <div class="form-container">
         <!-- 始终渲染SimpleForm组件，通过overlay显示loading状态 -->
-        <div class="form-wrapper" :class="{ 'loading': initLoading }">
-          <div v-if="initLoading" class="init-loading-overlay">
+        <div
+          class="form-wrapper"
+          :class="{ 'loading': initLoading }"
+        >
+          <div
+            v-if="initLoading"
+            class="init-loading-overlay"
+          >
             <a-spin size="large" />
-            <div class="loading-text">正在初始化表单数据...</div>
+            <div class="loading-text">
+              正在初始化表单数据...
+            </div>
           </div>
           
           <SimpleForm
@@ -25,10 +33,17 @@
       </div>
       
       <div class="data-display">
-        <div class="data-title">实时数据</div>
+        <div class="data-title">
+          实时数据
+        </div>
         <pre class="data-content">{{ JSON.stringify(formData, null, 2) }}</pre>
         
-        <div class="data-title" style="margin-top: 16px;">异步状态</div>
+        <div
+          class="data-title"
+          style="margin-top: 16px;"
+        >
+          异步状态
+        </div>
         <pre class="data-content">{{ JSON.stringify(asyncStates, null, 2) }}</pre>
       </div>
     </div>

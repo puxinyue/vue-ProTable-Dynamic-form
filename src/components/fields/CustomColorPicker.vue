@@ -1,7 +1,14 @@
 <template>
   <div class="custom-color-picker">
-    <div class="color-display" :style="{ backgroundColor: currentColor }" @click="!disabled && togglePicker">
-      <span v-if="!currentColor" class="placeholder">{{ field.placeholder || '选择颜色' }}</span>
+    <div
+      class="color-display"
+      :style="{ backgroundColor: currentColor }"
+      @click="!disabled && togglePicker"
+    >
+      <span
+        v-if="!currentColor"
+        class="placeholder"
+      >{{ field.placeholder || '选择颜色' }}</span>
     </div>
     <input
       v-if="showInput"
@@ -12,8 +19,11 @@
       @change="handleColorChange"
       @blur="handleBlur"
       @focus="handleFocus"
-    />
-    <div v-if="showPresetColors" class="preset-colors">
+    >
+    <div
+      v-if="showPresetColors"
+      class="preset-colors"
+    >
       <div
         v-for="color in presetColors"
         :key="color"

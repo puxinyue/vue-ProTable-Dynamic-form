@@ -1,4 +1,4 @@
-import { ref, reactive, computed, markRaw } from 'vue'
+import { ref, reactive, markRaw } from 'vue'
 import type { Component } from 'vue'
 
 // 全局组件注册表（使用响应式）

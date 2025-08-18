@@ -6,8 +6,8 @@
     <div class="example-section">
       <h3>1. 垂直布局（默认）</h3>
       <SimpleForm
-        :schema="verticalSchema"
         v-model="verticalFormData"
+        :schema="verticalSchema"
         @submit="handleSubmit"
       />
     </div>
@@ -16,8 +16,8 @@
     <div class="example-section">
       <h3>2. 水平布局</h3>
       <SimpleForm
-        :schema="horizontalSchema"
         v-model="horizontalFormData"
+        :schema="horizontalSchema"
         @submit="handleSubmit"
       />
     </div>
@@ -26,8 +26,8 @@
     <div class="example-section">
       <h3>3. 内联布局</h3>
       <SimpleForm
-        :schema="inlineSchema"
         v-model="inlineFormData"
+        :schema="inlineSchema"
         @submit="handleSubmit"
       />
     </div>
@@ -36,8 +36,8 @@
     <div class="example-section">
       <h3>4. 水平字段布局</h3>
       <SimpleForm
-        :schema="horizontalFieldsSchema"
         v-model="horizontalFieldsFormData"
+        :schema="horizontalFieldsSchema"
         @submit="handleSubmit"
       />
     </div>
@@ -46,8 +46,8 @@
     <div class="example-section">
       <h3>5. 网格布局</h3>
       <SimpleForm
-        :schema="gridSchema"
         v-model="gridFormData"
+        :schema="gridSchema"
         @submit="handleSubmit"
       />
     </div>
@@ -56,8 +56,8 @@
     <div class="example-section">
       <h3>6. 栅格系统布局</h3>
       <SimpleForm
-        :schema="colSchema"
         v-model="colFormData"
+        :schema="colSchema"
         @submit="handleSubmit"
       />
     </div>
@@ -66,8 +66,8 @@
     <div class="example-section">
       <h3>7. 响应式布局</h3>
       <SimpleForm
-        :schema="responsiveSchema"
         v-model="responsiveFormData"
+        :schema="responsiveSchema"
         @submit="handleSubmit"
       />
     </div>
@@ -76,8 +76,8 @@
     <div class="example-section">
       <h3>8. 自定义字段布局</h3>
       <SimpleForm
-        :schema="customFieldLayoutSchema"
         v-model="customFieldLayoutFormData"
+        :schema="customFieldLayoutSchema"
         @submit="handleSubmit"
       />
     </div>
@@ -101,8 +101,8 @@
               <span class="use-case">适用于信息密集表单</span>
             </div>
             <SimpleForm
-              :schema="gutterCompactSchema"
               v-model="gutterCompactData"
+              :schema="gutterCompactSchema"
               @submit="handleSubmit"
             />
           </div>
@@ -114,8 +114,8 @@
               <span class="use-case">推荐的默认设置</span>
             </div>
             <SimpleForm
-              :schema="gutterStandardSchema"
               v-model="gutterStandardData"
+              :schema="gutterStandardSchema"
               @submit="handleSubmit"
             />
           </div>
@@ -127,8 +127,8 @@
               <span class="use-case">适用于重要表单</span>
             </div>
             <SimpleForm
-              :schema="gutterRelaxedSchema"
               v-model="gutterRelaxedData"
+              :schema="gutterRelaxedSchema"
               @submit="handleSubmit"
             />
           </div>
@@ -145,8 +145,8 @@
               <code>gutter: [0, 8]</code>
             </div>
             <SimpleForm
-              :schema="gutterVerticalCompactSchema"
               v-model="gutterVerticalCompactData"
+              :schema="gutterVerticalCompactSchema"
               @submit="handleSubmit"
             />
           </div>
@@ -157,8 +157,8 @@
               <code>gutter: [0, 32]</code>
             </div>
             <SimpleForm
-              :schema="gutterVerticalRelaxedSchema"
               v-model="gutterVerticalRelaxedData"
+              :schema="gutterVerticalRelaxedSchema"
               @submit="handleSubmit"
             />
           </div>
@@ -175,8 +175,8 @@
               <code>gutter: 8</code>
             </div>
             <SimpleForm
-              :schema="gutterInlineCompactSchema"
               v-model="gutterInlineCompactData"
+              :schema="gutterInlineCompactSchema"
               @submit="handleSubmit"
             />
           </div>
@@ -187,16 +187,14 @@
               <code>gutter: 24</code>
             </div>
             <SimpleForm
-              :schema="gutterInlineRelaxedSchema"
               v-model="gutterInlineRelaxedData"
+              :schema="gutterInlineRelaxedSchema"
               @submit="handleSubmit"
             />
           </div>
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 

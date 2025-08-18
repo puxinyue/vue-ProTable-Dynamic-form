@@ -13,7 +13,10 @@
         ★
       </span>
     </div>
-    <div v-if="showText" class="rating-text">
+    <div
+      v-if="showText"
+      class="rating-text"
+    >
       {{ getRatingText(currentValue) }}
     </div>
   </div>

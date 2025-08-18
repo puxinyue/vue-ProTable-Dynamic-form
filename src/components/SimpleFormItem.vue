@@ -1,10 +1,25 @@
 <template>
-  <div class="simple-form-item" :class="formItemClasses" :style="formItemStyle">
+  <div
+    class="simple-form-item"
+    :class="formItemClasses"
+    :style="formItemStyle"
+  >
     <!-- 标签和控件布局 -->
-    <a-row v-if="useRowLayout" :gutter="formItemGutter">
+    <a-row
+      v-if="useRowLayout"
+      :gutter="formItemGutter"
+    >
       <!-- 字段标签 -->
-      <a-col v-if="field.label" :span="labelColSpan" :offset="labelColOffset" class="simple-form-item-label-col">
-        <div class="simple-form-item-label" :class="labelClasses">
+      <a-col
+        v-if="field.label"
+        :span="labelColSpan"
+        :offset="labelColOffset"
+        class="simple-form-item-label-col"
+      >
+        <div
+          class="simple-form-item-label"
+          :class="labelClasses"
+        >
           <span :class="{ required: isRequired }">{{ field.label }}</span>
           <!-- 提示图标 -->
           <a-tooltip
@@ -21,12 +36,16 @@
       </a-col>
       
       <!-- 字段控件 -->
-      <a-col :span="wrapperColSpan" :offset="wrapperColOffset" class="simple-form-item-control-col">
+      <a-col
+        :span="wrapperColSpan"
+        :offset="wrapperColOffset"
+        class="simple-form-item-control-col"
+      >
         <div class="simple-form-item-control">
           <!-- 分组字段 -->
           <SimpleGroup
             v-if="field.type === 'group'"
-            :field="field as FormGroup"
+            :field="fieldAsGroup"
             :path="path || ''"
           />
           
@@ -109,8 +128,8 @@
       
           <!-- 自定义组件 -->
           <component
-            v-else-if="customComponent"
             :is="customComponent"
+            v-else-if="customComponent"
             :value="fieldValue"
             :field="field"
             :disabled="isDisabled"
@@ -122,7 +141,10 @@
           />
       
           <!-- 默认：显示不支持的字段类型，提供更详细的错误信息 -->
-          <div v-else class="unsupported-field">
+          <div
+            v-else
+            class="unsupported-field"
+          >
             <div class="error-title">
               <ExclamationCircleOutlined /> 不支持的字段类型: {{ field.type }}
             </div>
@@ -151,8 +173,15 @@
     <!-- 简单布局 (不使用栅格) -->
     <template v-else>
       <!-- 字段标签（内联布局下即使无标签也保留占位以保证对齐） -->
-      <div v-if="field.label || isInlineLayout" class="simple-form-item-label" :class="labelClasses">
-        <span v-if="field.label" :class="{ required: isRequired }">{{ field.label }}</span>
+      <div
+        v-if="field.label || isInlineLayout"
+        class="simple-form-item-label"
+        :class="labelClasses"
+      >
+        <span
+          v-if="field.label"
+          :class="{ required: isRequired }"
+        >{{ field.label }}</span>
         <!-- 提示图标 -->
         <a-tooltip
           v-if="field.tooltip"
@@ -172,7 +201,7 @@
         <!-- 分组字段 -->
         <SimpleGroup
           v-if="field.type === 'group'"
-          :field="field as FormGroup"
+          :field="fieldAsGroup"
           :path="path || ''"
         />
         
@@ -255,8 +284,8 @@
         
         <!-- 自定义组件 -->
         <component
-          v-else-if="customComponent"
           :is="customComponent"
+          v-else-if="customComponent"
           :value="fieldValue"
           :field="field"
           :disabled="isDisabled"
@@ -268,7 +297,10 @@
         />
         
         <!-- 默认：显示不支持的字段类型，提供更详细的错误信息 -->
-        <div v-else class="unsupported-field">
+        <div
+          v-else
+          class="unsupported-field"
+        >
           <div class="error-title">
             <ExclamationCircleOutlined /> 不支持的字段类型: {{ field.type }}
           </div>
@@ -294,10 +326,16 @@
     </template>
     
     <!-- 验证状态和错误信息 -->
-    <div v-if="isValidating" class="simple-form-item-validating">
+    <div
+      v-if="isValidating"
+      class="simple-form-item-validating"
+    >
       <a-spin size="small" /> 验证中...
     </div>
-    <div v-else-if="hasError" class="simple-form-item-error-message">
+    <div
+      v-else-if="hasError"
+      class="simple-form-item-error-message"
+    >
       {{ errorMessage }}
     </div>
   </div>
@@ -318,6 +356,8 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+// 为模板提供分组字段的类型包装，避免在模板中使用 TS 的 as 断言
+const fieldAsGroup = computed(() => props.field as FormGroup)
 
 // 注入表单上下文
 const formContext = inject('formContext') as any

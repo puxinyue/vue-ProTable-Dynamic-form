@@ -9,22 +9,30 @@
     <div class="feature-overview">
       <div class="feature-grid">
         <div class="feature-card">
-          <div class="feature-icon">👁️</div>
+          <div class="feature-icon">
+            👁️
+          </div>
           <h4>条件显示</h4>
           <p>根据其他字段的值动态显示/隐藏字段</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🔄</div>
+          <div class="feature-icon">
+            🔄
+          </div>
           <h4>选项联动</h4>
           <p>根据选择的值动态更新选项列表</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🔄</div>
+          <div class="feature-icon">
+            🔄
+          </div>
           <h4>自动重置</h4>
           <p>依赖字段变化时自动重置到初始状态</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">⚙️</div>
+          <div class="feature-icon">
+            ⚙️
+          </div>
           <h4>可配置</h4>
           <p>支持启用/禁用重置功能</p>
         </div>
@@ -36,7 +44,9 @@
       <!-- 基础联动示例 -->
       <div class="example-section">
         <h3>📋 基础联动示例</h3>
-        <p class="section-desc">用户类型变化时，相关字段自动显示/隐藏并重置</p>
+        <p class="section-desc">
+          用户类型变化时，相关字段自动显示/隐藏并重置
+        </p>
         <div class="form-wrapper">
           <SimpleForm
             v-model="basicFormData"
@@ -53,7 +63,9 @@
       <!-- 地区联动示例 -->
       <div class="example-section">
         <h3>🌍 地区联动示例</h3>
-        <p class="section-desc">地区变化时，区域自动重置，确保数据一致性</p>
+        <p class="section-desc">
+          地区变化时，区域自动重置，确保数据一致性
+        </p>
         <div class="form-wrapper">
           <SimpleForm
             v-model="regionFormData"
@@ -70,7 +82,9 @@
       <!-- 车辆信息联动示例 -->
       <div class="example-section">
         <h3>🚗 车辆信息联动示例</h3>
-        <p class="section-desc">车辆类型变化时，品牌自动重置，支持级联联动</p>
+        <p class="section-desc">
+          车辆类型变化时，品牌自动重置，支持级联联动
+        </p>
         <div class="form-wrapper">
           <SimpleForm
             v-model="vehicleFormData"
@@ -87,7 +101,9 @@
       <!-- 自定义重置行为示例 -->
       <div class="example-section">
         <h3>⚙️ 自定义重置行为示例</h3>
-        <p class="section-desc">通过 resetOnChange 配置精确控制字段重置行为，展示不同业务场景下的重置策略</p>
+        <p class="section-desc">
+          通过 resetOnChange 配置精确控制字段重置行为，展示不同业务场景下的重置策略
+        </p>
         
         <!-- 重置行为说明 -->
         <div class="reset-behavior-guide">

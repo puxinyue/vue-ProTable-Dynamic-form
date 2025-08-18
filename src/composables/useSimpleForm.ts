@@ -1,7 +1,7 @@
 import { ref, computed, reactive, watch, nextTick } from 'vue'
 import type { SimpleFormSchema, ValidationRule, AsyncState } from '../types/form'
 import { getByPath, setByPath, getAllPaths } from '../utils/pathHelper'
-import { createComponentRegistry, type ComponentRegistry } from '../utils/componentRegistry'
+import { createComponentRegistry } from '../utils/componentRegistry'
 
 export function useSimpleForm(schema: SimpleFormSchema, initialData: any = {}) {
   // 单一数据源 - 表单数据
@@ -92,7 +92,7 @@ export function useSimpleForm(schema: SimpleFormSchema, initialData: any = {}) {
     const validateRequiredFields = (fields: any[], prefix = '') => {
       for (const field of fields) {
         if (field.type === 'group' && field.children) {
-          validateRequiredFields(field.children, field.name + '.')
+          validateRequiredFields(field.children, `${field.name  }.`)
         } else {
           const fieldPath = prefix + field.name
           if (field.rules?.some((rule: ValidationRule) => rule.required)) {

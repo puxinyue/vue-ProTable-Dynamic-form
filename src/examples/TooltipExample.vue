@@ -9,22 +9,30 @@
     <div class="feature-overview">
       <div class="feature-grid">
         <div class="feature-card">
-          <div class="feature-icon">💬</div>
+          <div class="feature-icon">
+            💬
+          </div>
           <h4>简单文本提示</h4>
           <p>使用字符串直接配置提示内容</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">⚙️</div>
+          <div class="feature-icon">
+            ⚙️
+          </div>
           <h4>高级配置提示</h4>
           <p>支持位置、颜色、样式等详细配置</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🎨</div>
+          <div class="feature-icon">
+            🎨
+          </div>
           <h4>自定义样式</h4>
           <p>支持自定义提示框样式和类名</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">🖱️</div>
+          <div class="feature-icon">
+            🖱️
+          </div>
           <h4>交互体验</h4>
           <p>鼠标悬停显示，友好的用户交互</p>
         </div>
@@ -36,7 +44,9 @@
       <!-- 简单提示示例 -->
       <div class="example-section">
         <h3>📝 简单提示示例</h3>
-        <p class="section-desc">使用字符串直接配置提示内容，适合简单的说明文字</p>
+        <p class="section-desc">
+          使用字符串直接配置提示内容，适合简单的说明文字
+        </p>
         <div class="form-wrapper">
           <SimpleForm
             v-model="simpleFormData"
@@ -53,7 +63,9 @@
       <!-- 高级提示示例 -->
       <div class="example-section">
         <h3>🔧 高级提示示例</h3>
-        <p class="section-desc">使用对象配置提示，支持位置、颜色、样式等详细配置</p>
+        <p class="section-desc">
+          使用对象配置提示，支持位置、颜色、样式等详细配置
+        </p>
         <div class="form-wrapper">
           <SimpleForm
             v-model="advancedFormData"
@@ -70,7 +82,9 @@
       <!-- 不同位置提示示例 -->
       <div class="example-section">
         <h3>📍 不同位置提示示例</h3>
-        <p class="section-desc">展示不同位置的提示效果，适应不同的布局需求</p>
+        <p class="section-desc">
+          展示不同位置的提示效果，适应不同的布局需求
+        </p>
         <div class="form-wrapper">
           <SimpleForm
             v-model="positionFormData"

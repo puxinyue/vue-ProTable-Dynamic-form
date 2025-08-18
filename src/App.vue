@@ -7,18 +7,30 @@
           <h2>Dynamic Form 动态表单组件</h2>
         </div>
         <a-menu
-          v-model:selectedKeys="selectedKeys"
+          v-model:selected-keys="selectedKeys"
           theme="dark"
           mode="horizontal"
           class="menu"
           @select="handleMenuSelect"
         >
-          <a-menu-item key="linkage">联动示例</a-menu-item>
-          <a-menu-item key="complex">复杂表单示例</a-menu-item>
-          <a-menu-item key="async">异步功能示例</a-menu-item>
-          <a-menu-item key="custom">自定义组件示例</a-menu-item>
-          <a-menu-item key="layout">布局配置示例</a-menu-item>
-          <a-menu-item key="tooltip">提示功能示例</a-menu-item>
+          <a-menu-item key="linkage">
+            联动示例
+          </a-menu-item>
+          <a-menu-item key="complex">
+            复杂表单示例
+          </a-menu-item>
+          <a-menu-item key="async">
+            异步功能示例
+          </a-menu-item>
+          <a-menu-item key="custom">
+            自定义组件示例
+          </a-menu-item>
+          <a-menu-item key="layout">
+            布局配置示例
+          </a-menu-item>
+          <a-menu-item key="tooltip">
+            提示功能示例
+          </a-menu-item>
         </a-menu>
       </a-layout-header>
       
@@ -34,7 +46,10 @@
           <TooltipExample v-else-if="currentExample === 'tooltip'" />
           
           <!-- 欢迎页面 -->
-          <div v-else class="welcome">
+          <div
+            v-else
+            class="welcome"
+          >
             <div class="welcome-content">
               <h1>🎯 Vue3 动态表单组件</h1>
               <p class="description">
@@ -53,44 +68,65 @@
               <div class="features">
                 <a-row :gutter="24">
                   <a-col :span="8">
-                    <a-card title="🚀 高性能" class="feature-card">
+                    <a-card
+                      title="🚀 高性能"
+                      class="feature-card"
+                    >
                       <p>基于 Vue 3 Composition API，支持 TypeScript</p>
                       <p>虚拟化渲染，智能更新优化</p>
                     </a-card>
                   </a-col>
                   
                   <a-col :span="8">
-                    <a-card title="🔗 智能联动" class="feature-card">
+                    <a-card
+                      title="🔗 智能联动"
+                      class="feature-card"
+                    >
                       <p>强大的字段联动引擎</p>
                       <p>支持显示/隐藏、启用/禁用、值设置等</p>
                     </a-card>
                   </a-col>
                   
                   <a-col :span="8">
-                    <a-card title="📡 异步数据" class="feature-card">
+                    <a-card
+                      title="📡 异步数据"
+                      class="feature-card"
+                    >
                       <p>完善的异步数据管理</p>
                       <p>支持缓存、依赖更新、错误处理</p>
                     </a-card>
                   </a-col>
                 </a-row>
                 
-                <a-row :gutter="24" style="margin-top: 24px;">
+                <a-row
+                  :gutter="24"
+                  style="margin-top: 24px;"
+                >
                   <a-col :span="8">
-                    <a-card title="🎨 丰富组件" class="feature-card">
+                    <a-card
+                      title="🎨 丰富组件"
+                      class="feature-card"
+                    >
                       <p>内置多种字段类型组件</p>
                       <p>支持自定义组件扩展</p>
                     </a-card>
                   </a-col>
                   
                   <a-col :span="8">
-                    <a-card title="📝 Schema驱动" class="feature-card">
+                    <a-card
+                      title="📝 Schema驱动"
+                      class="feature-card"
+                    >
                       <p>JSON Schema 完全驱动表单渲染</p>
                       <p>运行时类型验证和推导</p>
                     </a-card>
                   </a-col>
                   
                   <a-col :span="8">
-                    <a-card title="🛠 开发友好" class="feature-card">
+                    <a-card
+                      title="🛠 开发友好"
+                      class="feature-card"
+                    >
                       <p>完整的 TypeScript 类型支持</p>
                       <p>丰富的 API 和事件系统</p>
                     </a-card>
@@ -100,17 +136,36 @@
               
               <div class="quick-start">
                 <h3>快速开始</h3>
-                <a-space size="large" wrap>
-                  <a-button type="primary" size="large" @click="handleMenuSelect({ key: 'linkage' })">
+                <a-space
+                  size="large"
+                  wrap
+                >
+                  <a-button
+                    type="primary"
+                    size="large"
+                    @click="handleMenuSelect({ key: 'linkage' })"
+                  >
                     🔗 联动示例
                   </a-button>
-                  <a-button size="large" @click="handleMenuSelect({ key: 'complex' })">
+                  <a-button
+                    size="large"
+                    @click="handleMenuSelect({ key: 'complex' })"
+                  >
                     复杂表单示例
                   </a-button>
-                  <a-button type="dashed" size="large" @click="handleMenuSelect({ key: 'async' })">
+                  <a-button
+                    type="dashed"
+                    size="large"
+                    @click="handleMenuSelect({ key: 'async' })"
+                  >
                     异步功能示例
                   </a-button>
-                  <a-button type="dashed" size="large" style="background: #fff7e6; border-color: #ffa940; color: #fa8c16;" @click="handleMenuSelect({ key: 'custom' })">
+                  <a-button
+                    type="dashed"
+                    size="large"
+                    style="background: #fff7e6; border-color: #ffa940; color: #fa8c16;"
+                    @click="handleMenuSelect({ key: 'custom' })"
+                  >
                     🎨 自定义组件示例
                   </a-button>
                 </a-space>

@@ -17,7 +17,9 @@
       </div>
       
       <div class="data-display">
-        <div class="data-title">实时数据</div>
+        <div class="data-title">
+          实时数据
+        </div>
         <pre class="data-content">{{ JSON.stringify(formData, null, 2) }}</pre>
       </div>
     </div>

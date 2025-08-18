@@ -1,0 +1,75 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/vue3-essential",
+    "plugin:vue/vue3-strongly-recommended",
+    "plugin:vue/vue3-recommended"
+  ],
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "parser": {
+      "ts": "@typescript-eslint/parser",
+      "<template>": "espree"
+    },
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["vue"],
+  "rules": {
+    "vue/multi-word-component-names": "off",
+    "vue/no-v-html": "off",
+    "vue/require-default-prop": "off",
+    "vue/require-explicit-emits": "off",
+    "vue/no-unused-vars": "error",
+    "vue/no-unused-components": "error",
+    "no-console": "off",
+    "no-debugger": "off",
+    "prefer-const": "error",
+    "no-var": "error",
+    "object-shorthand": "error",
+    "prefer-template": "error",
+    "no-unused-vars": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.vue"],
+      "rules": {
+        "vue/component-name-in-template-casing": ["error", "PascalCase"],
+        "vue/component-definition-name-casing": ["error", "PascalCase"],
+        "vue/prop-name-casing": ["error", "camelCase"],
+        "vue/attribute-hyphenation": ["error", "always"],
+        "vue/v-on-event-hyphenation": ["error", "always"]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-non-null-assertion": "warn"
+      }
+    }
+  ],
+  "globals": {
+    "defineProps": "readonly",
+    "defineEmits": "readonly",
+    "defineExpose": "readonly",
+    "withDefaults": "readonly"
+  }
+}

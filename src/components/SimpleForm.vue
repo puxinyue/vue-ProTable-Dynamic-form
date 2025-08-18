@@ -1,6 +1,12 @@
 <template>
-  <div class="simple-form" :class="formLayoutClasses">
-    <a-row v-if="isGridLayout" :gutter="gutterConfig">
+  <div
+    class="simple-form"
+    :class="formLayoutClasses"
+  >
+    <a-row
+      v-if="isGridLayout"
+      :gutter="gutterConfig"
+    >
       <a-col
         v-for="field in visibleFields"
         :key="field.name"
@@ -17,7 +23,11 @@
       </a-col>
     </a-row>
     
-    <div v-else :class="fieldsContainerClass" :style="getFieldsContainerStyle()">
+    <div
+      v-else
+      :class="fieldsContainerClass"
+      :style="getFieldsContainerStyle()"
+    >
       <SimpleFormItem
         v-for="field in visibleFields"
         :key="field.name"
@@ -27,7 +37,10 @@
       />
 
       <!-- 内联布局下，将操作按钮放入同一行 -->
-      <div v-if="showActions && isInlineLayout" class="simple-form-actions inline-actions">
+      <div
+        v-if="showActions && isInlineLayout"
+        class="simple-form-actions inline-actions"
+      >
         <a-button
           :type="submitButtonConfig.type"
           :size="submitButtonConfig.size"
@@ -38,7 +51,10 @@
         >
           {{ submitButtonConfig.text }}
         </a-button>
-        <a-button v-if="showReset && !schema.extraButtons?.length" @click="handleReset">
+        <a-button
+          v-if="showReset && !schema.extraButtons?.length"
+          @click="handleReset"
+        >
           {{ resetText }}
         </a-button>
         <a-button
@@ -50,7 +66,10 @@
           :disabled="button.disabled"
           @click="button.onClick"
         >
-          <template v-if="button.icon" #icon>
+          <template
+            v-if="button.icon"
+            #icon
+          >
             <DownOutlined v-if="button.icon === 'down'" />
           </template>
           {{ button.text }}
@@ -58,7 +77,10 @@
       </div>
     </div>
     
-    <div v-if="showActions && !isInlineLayout" class="simple-form-actions">
+    <div
+      v-if="showActions && !isInlineLayout"
+      class="simple-form-actions"
+    >
       <!-- 自定义提交按钮或默认提交按钮 -->
       <a-button
         :type="submitButtonConfig.type"
@@ -72,7 +94,10 @@
       </a-button>
       
       <!-- 默认重置按钮 -->
-      <a-button v-if="showReset && !schema.extraButtons?.length" @click="handleReset">
+      <a-button
+        v-if="showReset && !schema.extraButtons?.length"
+        @click="handleReset"
+      >
         {{ resetText }}
       </a-button>
       
@@ -86,7 +111,10 @@
         :disabled="button.disabled"
         @click="button.onClick"
       >
-        <template v-if="button.icon" #icon>
+        <template
+          v-if="button.icon"
+          #icon
+        >
           <DownOutlined v-if="button.icon === 'down'" />
         </template>
         {{ button.text }}

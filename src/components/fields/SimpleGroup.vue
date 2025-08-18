@@ -1,15 +1,32 @@
 <template>
-  <div class="simple-group" :class="{ 'simple-group-bordered': field.bordered }">
+  <div
+    class="simple-group"
+    :class="{ 'simple-group-bordered': field.bordered }"
+  >
     <!-- 分组标题和描述 -->
-    <div v-if="field.label || field.props?.description" class="simple-group-header">
-      <h4 v-if="field.label" class="simple-group-title">{{ field.label }}</h4>
-      <p v-if="field.props?.description" class="simple-group-description">
+    <div
+      v-if="field.label || field.props?.description"
+      class="simple-group-header"
+    >
+      <h4
+        v-if="field.label"
+        class="simple-group-title"
+      >
+        {{ field.label }}
+      </h4>
+      <p
+        v-if="field.props?.description"
+        class="simple-group-description"
+      >
         {{ field.props.description }}
       </p>
     </div>
     
     <!-- 分组内容 -->
-    <div class="simple-group-content" :class="layoutClass">
+    <div
+      class="simple-group-content"
+      :class="layoutClass"
+    >
       <SimpleFormItem
         v-for="childField in visibleChildren"
         :key="childField.name"
