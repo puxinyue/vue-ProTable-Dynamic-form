@@ -1,6 +1,6 @@
 {
   "name": "@chl1860/dynamic-form-vue3",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "type": "module",
   "description": "Vue3 + TypeScript + Ant Design Vue 动态表单组件",
   "main": "./dist/dynamic-form.umd.js",
