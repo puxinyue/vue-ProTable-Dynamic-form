@@ -1,6 +1,6 @@
 # 使用示例
 
-这是一个完整的示例，展示如何在Vue 3项目中使用`@dynamic-form/vue3`。
+这是一个完整的示例，展示如何在Vue 3项目中使用`@chl1860/dynamic-form-vue3`。
 
 ## 项目设置
 
@@ -15,7 +15,7 @@ npm install
 ### 2. 安装动态表单组件
 
 ```bash
-npm install @dynamic-form/vue3 ant-design-vue
+npm install @chl1860/dynamic-form-vue3 ant-design-vue
 ```
 
 ### 3. 配置主应用
@@ -25,11 +25,11 @@ npm install @dynamic-form/vue3 ant-design-vue
 import { createApp } from 'vue'
 import App from './App.vue'
 import Antd from 'ant-design-vue'
-import DynamicForm from '@dynamic-form/vue3'
+import DynamicForm from '@chl1860/dynamic-form-vue3'
 
 // 导入样式
 import 'ant-design-vue/dist/reset.css'
-import '@dynamic-form/vue3/dist/style.css'
+import '@chl1860/dynamic-form-vue3/dist/style.css'
 
 const app = createApp(App)
 
@@ -71,7 +71,7 @@ app.mount('#app')
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { SimpleForm, type SimpleFormSchema } from '@dynamic-form/vue3'
+import { SimpleForm, type SimpleFormSchema } from '@chl1860/dynamic-form-vue3'
 
 // 表单数据
 const formData = ref({})
@@ -292,7 +292,7 @@ import UserRegistrationForm from './components/UserRegistrationForm.vue'
 
 ```typescript
 // 只导入需要的组件
-import { SimpleForm, SimpleFormItem, useSimpleForm } from '@dynamic-form/vue3'
+import { SimpleForm, SimpleFormItem, useSimpleForm } from '@chl1860/dynamic-form-vue3'
 
 export default {
   components: {
@@ -317,7 +317,7 @@ export default {
 // main.ts
 import { createApp } from 'vue'
 import App from './App.vue'
-import DynamicForm from '@dynamic-form/vue3'
+import DynamicForm from '@chl1860/dynamic-form-vue3'
 import CustomDateRange from './components/CustomDateRange.vue'
 
 const app = createApp(App)
@@ -338,7 +338,7 @@ app.mount('#app')
 ```typescript
 // 使用 Composables 进行状态管理
 import { ref, reactive, watch, readonly, computed } from 'vue'
-import type { SimpleFormSchema } from '@dynamic-form/vue3'
+import type { SimpleFormSchema } from '@chl1860/dynamic-form-vue3'
 
 export function useFormStore() {
   const currentFormData = ref({})

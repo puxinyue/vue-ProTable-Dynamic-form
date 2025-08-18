@@ -1,5 +1,5 @@
 {
-  "name": "@dynamic-form/vue3",
+  "name": "@chl1860/dynamic-form-vue3",
   "version": "2.0.0",
   "type": "module",
   "description": "Vue3 + TypeScript + Ant Design Vue 动态表单组件",
@@ -49,16 +49,21 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "publish:patch": "chmod +x scripts/publish.sh && ./scripts/publish.sh patch",
+    "publish:minor": "chmod +x scripts/publish.sh && ./scripts/publish.sh minor",
+    "publish:major": "chmod +x scripts/publish.sh && ./scripts/publish.sh major",
+    "publish:quick": "chmod +x scripts/quick-publish.sh && ./scripts/quick-publish.sh patch",
+    "publish:check": "npm run lint && npm run type-check && npm run test && npm run build"
   },
   "peerDependencies": {
-    "vue": "^3.4.0",
-    "ant-design-vue": "^4.0.0"
+    "ant-design-vue": "^4.0.0",
+    "vue": "^3.4.0"
   },
   "optionalDependencies": {
-    "zod": "^3.22.0",
     "@ant-design/colors": "^7.0.0",
-    "@ant-design/icons-vue": "^7.0.0"
+    "@ant-design/icons-vue": "^7.0.0",
+    "zod": "^3.22.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

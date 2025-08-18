@@ -78,7 +78,7 @@ npm version major
 
 ### 1. 检查npm上的包
 
-访问 https://www.npmjs.com/package/@dynamic-form/vue3
+访问 https://www.npmjs.com/package/@chl1860/dynamic-form-vue3
 
 ### 2. 在新项目中测试安装
 
@@ -86,14 +86,14 @@ npm version major
 mkdir test-install
 cd test-install
 npm init -y
-npm install @dynamic-form/vue3 vue@^3.4.0 ant-design-vue@^4.0.0
+npm install @chl1860/dynamic-form-vue3 vue@^3.4.0 ant-design-vue@^4.0.0
 ```
 
 ### 3. 测试导入
 
 ```javascript
 // test.js
-const { SimpleForm } = require('@dynamic-form/vue3');
+const { SimpleForm } = require('@chl1860/dynamic-form-vue3');
 console.log('SimpleForm imported successfully:', !!SimpleForm);
 ```
 
@@ -115,7 +115,7 @@ console.log('SimpleForm imported successfully:', !!SimpleForm);
 
 ### 包名冲突
 
-如果包名 `@dynamic-form/vue3` 已被占用，修改 `package.json` 中的 `name` 字段：
+如果包名 `@chl1860/dynamic-form-vue3` 已被占用，修改 `package.json` 中的 `name` 字段：
 
 ```json
 {

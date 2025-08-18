@@ -1,5 +1,5 @@
 # Dynamic Form - Vue3 动态表单组件 v2.0
-
+--
 
 基于 Vue 3 + TypeScript + Ant Design Vue 构建的**简化架构**动态表单组件，彻底解决了联动和验证问题，显著提升开发效率。
 
@@ -27,13 +27,13 @@
 
 ```bash
 # 使用 npm 安装
-npm install @dynamic-form/vue3
+npm install @chl1860/dynamic-form-vue3
 
 # 使用 yarn 安装
-yarn add @dynamic-form/vue3
+yarn add @chl1860/dynamic-form-vue3
 
 # 使用 pnpm 安装
-pnpm add @dynamic-form/vue3
+pnpm add @chl1860/dynamic-form-vue3
 ```
 
 ### 对等依赖
@@ -52,9 +52,9 @@ npm install vue@^3.4.0 ant-design-vue@^4.0.0
 // main.ts
 import { createApp } from 'vue'
 import Antd from 'ant-design-vue'
-import DynamicForm from '@dynamic-form/vue3'
+import DynamicForm from '@chl1860/dynamic-form-vue3'
 import 'ant-design-vue/dist/reset.css'
-import '@dynamic-form/vue3/dist/style.css' // 如果有样式文件
+import '@chl1860/dynamic-form-vue3/dist/style.css' // 如果有样式文件
 
 const app = createApp(App)
 
@@ -70,7 +70,7 @@ app.mount('#app')
 ### 按需导入
 
 ```typescript
-import { SimpleForm, SimpleFormItem, type SimpleFormSchema } from '@dynamic-form/vue3'
+import { SimpleForm, SimpleFormItem, type SimpleFormSchema } from '@chl1860/dynamic-form-vue3'
 ```
 
 ## 🚀 v2.0 快速开始
@@ -89,7 +89,7 @@ import { SimpleForm, SimpleFormItem, type SimpleFormSchema } from '@dynamic-form
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { SimpleForm, type SimpleFormSchema } from '@dynamic-form/vue3'
+import { SimpleForm, type SimpleFormSchema } from '@chl1860/dynamic-form-vue3'
 
 const formData = ref({})
 
@@ -259,7 +259,7 @@ const schema: SimpleFormSchema = {
 
 ```typescript
 // 1. 全局注册自定义组件
-import { globalComponentRegistry } from '@dynamic-form/vue3'
+import { globalComponentRegistry } from '@chl1860/dynamic-form-vue3'
 import MyCustomComponent from './MyCustomComponent.vue'
 
 globalComponentRegistry.register('my-custom', MyCustomComponent)
@@ -281,7 +281,7 @@ const schema: SimpleFormSchema = {
 }
 
 // 3. 直接使用组件对象
-import CustomRatingField from '@dynamic-form/vue3'
+import CustomRatingField from '@chl1860/dynamic-form-vue3'
 
 const schema: SimpleFormSchema = {
   fields: [
@@ -394,25 +394,25 @@ const schema: SimpleFormSchema = {
 
 | 组件名 | 说明 | 导入方式 |
 |--------|------|----------|
-| `SimpleForm` | 主表单组件 | `import { SimpleForm } from '@dynamic-form/vue3'` |
-| `SimpleFormItem` | 表单项组件 | `import { SimpleFormItem } from '@dynamic-form/vue3'` |
+| `SimpleForm` | 主表单组件 | `import { SimpleForm } from '@chl1860/dynamic-form-vue3'` |
+| `SimpleFormItem` | 表单项组件 | `import { SimpleFormItem } from '@chl1860/dynamic-form-vue3'` |
 
 ### 字段组件
 
 | 组件名 | 说明 | 导入方式 |
 |--------|------|----------|
-| `SimpleInput` | 输入框组件 | `import { SimpleInput } from '@dynamic-form/vue3'` |
-| `SimpleSelect` | 选择器组件 | `import { SimpleSelect } from '@dynamic-form/vue3'` |
-| `SimpleRadio` | 单选框组件 | `import { SimpleRadio } from '@dynamic-form/vue3'` |
-| `SimpleGroup` | 分组组件 | `import { SimpleGroup } from '@dynamic-form/vue3'` |
+| `SimpleInput` | 输入框组件 | `import { SimpleInput } from '@chl1860/dynamic-form-vue3'` |
+| `SimpleSelect` | 选择器组件 | `import { SimpleSelect } from '@chl1860/dynamic-form-vue3'` |
+| `SimpleRadio` | 单选框组件 | `import { SimpleRadio } from '@chl1860/dynamic-form-vue3'` |
+| `SimpleGroup` | 分组组件 | `import { SimpleGroup } from '@chl1860/dynamic-form-vue3'` |
 
 ### Composables & 工具
 
 | 功能 | 说明 | 导入方式 |
 |------|------|----------|
-| `useSimpleForm` | 表单状态管理 Hook | `import { useSimpleForm } from '@dynamic-form/vue3'` |
-| `globalComponentRegistry` | 全局组件注册器 | `import { globalComponentRegistry } from '@dynamic-form/vue3'` |
-| `getByPath` / `setByPath` | 路径工具函数 | `import { getByPath, setByPath } from '@dynamic-form/vue3'` |
+| `useSimpleForm` | 表单状态管理 Hook | `import { useSimpleForm } from '@chl1860/dynamic-form-vue3'` |
+| `globalComponentRegistry` | 全局组件注册器 | `import { globalComponentRegistry } from '@chl1860/dynamic-form-vue3'` |
+| `getByPath` / `setByPath` | 路径工具函数 | `import { getByPath, setByPath } from '@chl1860/dynamic-form-vue3'` |
 
 ### SimpleFormSchema
 
@@ -774,7 +774,7 @@ const schema: SimpleFormSchema = {
    import { DynamicForm, useFormState } from '@/index'
    
    // v2.0
-   import { SimpleForm, useSimpleForm } from '@dynamic-form/vue3'
+import { SimpleForm, useSimpleForm } from '@chl1860/dynamic-form-vue3'
    ```
 
 ## 🧪 开发和测试
@@ -812,7 +812,7 @@ dist/
 
 ```html
 <!-- UMD版本 (通过CDN) -->
-<script src="https://unpkg.com/@dynamic-form/vue3@latest/dist/dynamic-form.umd.js"></script>
+<script src="https://unpkg.com/@chl1860/dynamic-form-vue3@latest/dist/dynamic-form.umd.js"></script>
 <script>
   const { SimpleForm } = DynamicForm
   // 使用组件...
