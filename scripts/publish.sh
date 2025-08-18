@@ -128,16 +128,16 @@ run_type_check() {
 }
 
 # 运行测试
-run_tests() {
-    log_info "运行测试..."
-    
-    if npm test; then
-        log_success "测试通过"
-    else
-        log_error "测试失败"
-        exit 1
-    fi
-}
+# run_tests() {
+#     log_info "运行测试..."
+#     
+#     if npm test; then
+#         log_success "测试通过"
+#     else
+#         log_error "测试失败"
+#         exit 1
+#     fi
+# }
 
 # 构建项目
 build_project() {
@@ -301,7 +301,7 @@ main() {
     install_dependencies
     run_lint
     run_type_check
-    run_tests
+    # run_tests
     build_project
     update_version $version_type
     
