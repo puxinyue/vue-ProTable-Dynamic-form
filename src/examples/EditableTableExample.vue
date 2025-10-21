@@ -1,7 +1,7 @@
 <script lang="tsx">
 import { defineComponent, ref, reactive, computed, onMounted } from 'vue'
-import { Button, Input, Select, Switch, Space, message, InputNumber } from 'ant-design-vue'
-import { DeleteOutlined, ArrowUpOutlined, ArrowDownOutlined, PlusOutlined } from '@ant-design/icons-vue'
+import { Button, Input, Select, Switch, Space, message, InputNumber, Drawer, Table } from 'ant-design-vue'
+import { DeleteOutlined, ArrowUpOutlined, ArrowDownOutlined, PlusOutlined, DatabaseOutlined, ClearOutlined, EditOutlined } from '@ant-design/icons-vue'
 import PMProTable from '../components/ProTable'
 import type { PMProTableProps } from '../components/ProTable/types'
 import type { Key } from 'ant-design-vue/es/_util/type'
@@ -20,6 +20,17 @@ interface TableDataItem {
   precision?: number
 }
 
+// 数据标准项定义
+interface DataStandardItem {
+  id: string
+  code: string
+  name: string
+  dataType: string
+  length?: number
+  precision?: number
+  description: string
+}
+
 export default defineComponent({
   name: 'EditableTableExample',
   setup() {
@@ -28,6 +39,55 @@ export default defineComponent({
 
     // 数据源
     const dataSource = ref<TableDataItem[]>([])
+
+    // 数据标准抽屉相关状态
+    const drawerVisible = ref(false)
+    const currentEditingRowId = ref<string>('')
+    const selectedStandardItem = ref<DataStandardItem | null>(null)
+
+    // 数据标准列表
+    const dataStandardList = ref<DataStandardItem[]>([
+      {
+        id: '1',
+        code: 'GB/T 2260-2007',
+        name: '行政区划代码',
+        dataType: 'VARCHAR',
+        length: 6,
+        description: '中华人民共和国行政区划代码'
+      },
+      {
+        id: '2',
+        code: 'GB/T 2659-2000',
+        name: '国家代码',
+        dataType: 'VARCHAR',
+        length: 3,
+        description: '世界各国和地区名称代码'
+      },
+      {
+        id: '3',
+        code: 'GB/T 7408-2005',
+        name: '日期时间格式',
+        dataType: 'DATETIME',
+        description: '数据元和交换格式 信息交换 日期和时间表示法'
+      },
+      {
+        id: '4',
+        code: 'CUSTOM_001',
+        name: '用户ID',
+        dataType: 'BIGINT',
+        length: 20,
+        description: '用户唯一标识符'
+      },
+      {
+        id: '5',
+        code: 'CUSTOM_002',
+        name: '金额',
+        dataType: 'DECIMAL',
+        length: 10,
+        precision: 2,
+        description: '货币金额，保留两位小数'
+      }
+    ])
 
     // 数据类型选项
     const dataTypeOptions = [
@@ -188,12 +248,18 @@ export default defineComponent({
         width: 150,
         customRender: ({ record }: { record: TableDataItem }) => {
           return (
-            <Select
-              value={record.dataStandardCode}
-              onChange={(value: any) => handleCellChange(record.id, 'dataStandardCode', value)}
-              options={dataStandardOptions}
-              style={{ width: '100%' }}
-            />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {record.dataStandardCode || '未选择'}
+              </span>
+              <Button
+                type="link"
+                size="small"
+                icon={<EditOutlined />}
+                onClick={() => handleOpenDataStandardDrawer(record.id)}
+                title="选择数据标准"
+              />
+            </div>
           )
         }
       },
@@ -264,12 +330,79 @@ export default defineComponent({
       }
     ])
 
+    const handleGenerateDDL = () => {
+      console.log('生成DDL')
+    }
+
+    // 打开数据标准抽屉
+    const handleOpenDataStandardDrawer = (rowId: string) => {
+      currentEditingRowId.value = rowId
+      selectedStandardItem.value = null
+      drawerVisible.value = true
+    }
+
+    // 关闭数据标准抽屉
+    const handleCloseDataStandardDrawer = () => {
+      drawerVisible.value = false
+      currentEditingRowId.value = ''
+      selectedStandardItem.value = null
+    }
+
+    // 选择数据标准项
+    const handleSelectDataStandard = (item: DataStandardItem) => {
+      selectedStandardItem.value = item
+    }
+
+    // 确认选择数据标准
+    const handleConfirmDataStandard = () => {
+      if (!selectedStandardItem.value || !currentEditingRowId.value) {
+        message.warning('请先选择一个数据标准')
+        return
+      }
+
+      const rowIndex = dataSource.value.findIndex(item => item.id === currentEditingRowId.value)
+      if (rowIndex !== -1) {
+        const row = dataSource.value[rowIndex]
+        const standardItem = selectedStandardItem.value
+        
+        // 应用数据标准到当前行
+        dataSource.value[rowIndex] = {
+          ...row,
+          dataStandardCode: standardItem.code,
+          dataType: standardItem.dataType,
+          length: standardItem.length,
+          precision: standardItem.precision,
+          // 如果标准有名称，也可以更新字段名称
+          cname: standardItem.name
+        }
+        
+        message.success(`已应用数据标准：${standardItem.name}`)
+        handleCloseDataStandardDrawer()
+      }
+    }
+
     // 工具栏渲染
     const toolBarRender = () => {
       return (
-        <div style={{ display: 'flex', justifyContent: 'flex-start',marginBottom: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '10px', gap: '8px' }}>
           <Button type="primary" icon={<PlusOutlined />} onClick={handleAddRow}>
             新增行
+          </Button>
+          <Button 
+            type="default" 
+            icon={<DatabaseOutlined />} 
+            onClick={handleGenerateDDL}
+            disabled={dataSource.value.length === 0}
+          >
+            DDL建表
+          </Button>
+          <Button 
+            danger 
+            icon={<ClearOutlined />} 
+            onClick={handleBatchDelete}
+            disabled={rowSelection.selectedRowKeys.length === 0}
+          >
+            批量删除 ({rowSelection.selectedRowKeys.length})
           </Button>
         </div>
       )
@@ -369,6 +502,28 @@ export default defineComponent({
       console.log('筛选后的数据:', filteredData)
     }
 
+
+
+    // 批量删除功能
+    const handleBatchDelete = () => {
+      if (rowSelection.selectedRowKeys.length === 0) {
+        message.warning('请先选择要删除的行')
+        return
+      }
+      
+      // 确认删除
+      const confirmDelete = () => {
+        const selectedIds = rowSelection.selectedRowKeys
+        dataSource.value = dataSource.value.filter(item => !selectedIds.includes(item.id))
+        rowSelection.selectedRowKeys = []
+        updateSerialNumbers()
+        message.success(`已删除 ${selectedIds.length} 条数据`)
+      }
+      
+      // 这里可以添加确认对话框
+      confirmDelete()
+    }
+
     // 初始化测试数据
     const initTestData = () => {
       const testData: TableDataItem[] = []
@@ -395,6 +550,52 @@ export default defineComponent({
       initTestData()
     })
 
+    // 数据标准抽屉的列配置
+    const dataStandardColumns = [
+      {
+        title: '标准代码',
+        dataIndex: 'code',
+        key: 'code',
+        width: 120
+      },
+      {
+        title: '标准名称',
+        dataIndex: 'name',
+        key: 'name',
+        width: 150
+      },
+      {
+        title: '数据类型',
+        dataIndex: 'dataType',
+        key: 'dataType',
+        width: 100
+      },
+      {
+        title: '长度',
+        dataIndex: 'length',
+        key: 'length',
+        width: 80,
+        customRender: ({ record }: { record: DataStandardItem }) => {
+          return record.length ? record.length : '-'
+        }
+      },
+      {
+        title: '精度',
+        dataIndex: 'precision',
+        key: 'precision',
+        width: 80,
+        customRender: ({ record }: { record: DataStandardItem }) => {
+          return record.precision ? record.precision : '-'
+        }
+      },
+      {
+        title: '描述',
+        dataIndex: 'description',
+        key: 'description',
+        ellipsis: true
+      }
+    ]
+
     // 返回渲染函数
     return () => {
       return (
@@ -418,6 +619,55 @@ export default defineComponent({
             classKey="editable-table"
             onFilterListChange={handleFilterListChange}
           />
+          
+          {/* 数据标准选择抽屉 */}
+          <Drawer
+            title="选择数据标准"
+            placement="right"
+            width={800}
+            open={drawerVisible.value}
+            onClose={handleCloseDataStandardDrawer}
+            footer={
+              <div style={{ textAlign: 'right' }}>
+                <Space>
+                  <Button onClick={handleCloseDataStandardDrawer}>
+                    取消
+                  </Button>
+                  <Button 
+                    type="primary" 
+                    onClick={handleConfirmDataStandard}
+                    disabled={!selectedStandardItem.value}
+                  >
+                    确定
+                  </Button>
+                </Space>
+              </div>
+            }
+          >
+            <div style={{ marginBottom: '16px' }}>
+              <p>请选择一个数据标准，选择后将自动应用到当前字段：</p>
+            </div>
+            <Table
+              columns={dataStandardColumns}
+              dataSource={dataStandardList.value}
+              rowKey="id"
+              size="small"
+              rowSelection={{
+                type: 'radio',
+                selectedRowKeys: selectedStandardItem.value ? [selectedStandardItem.value.id] : [],
+                onChange: (selectedRowKeys, selectedRows) => {
+                  if (selectedRows.length > 0) {
+                    handleSelectDataStandard(selectedRows[0])
+                  }
+                }
+              }}
+              pagination={{
+                pageSize: 10,
+                showSizeChanger: true,
+                showQuickJumper: true
+              }}
+            />
+          </Drawer>
         </div>
       )
     }
