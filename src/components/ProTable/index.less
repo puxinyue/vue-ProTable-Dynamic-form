@@ -76,4 +76,19 @@
   .ant-card-bordered{
     border: 1px solid #fff;
   }
+  
+  // 禁止表头单独滚动
+  .ant-table-thead {
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    pointer-events: none;
+    
+    tr {
+      pointer-events: auto;
+    }
+    
+    th {
+      pointer-events: auto;
+    }
+  }
 }

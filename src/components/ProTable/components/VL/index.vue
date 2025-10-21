@@ -129,6 +129,34 @@ export default {
         computeTransformedData(props.data);
       }
       updateVb(0);
+      
+      // 禁止表头单独滚动
+      nextTick(() => {
+        const tableHeader = document.querySelector(`.${props.classKey} .ant-table-thead`);
+        if (tableHeader) {
+          // 禁止表头滚动
+          tableHeader.style.overflowX = 'hidden';
+          tableHeader.style.overflowY = 'hidden';
+          
+          // 阻止表头的滚动事件
+          tableHeader.addEventListener('scroll', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // 强制同步到虚拟列表的滚动位置
+            tableHeader.scrollLeft = vb.value.scrollLeft;
+          }, { passive: false });
+          
+          // 阻止表头的鼠标滚轮事件
+          tableHeader.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // 将滚轮事件转发到虚拟列表容器
+            if (vb.value) {
+              vb.value.scrollLeft += e.deltaX;
+            }
+          }, { passive: false });
+        }
+      });
     });
 
     // KeepAlive 有效，进入该页面
@@ -152,6 +180,18 @@ export default {
       // 组价销毁时清除之前的事件
       if (props.pageMode) {
         window.removeEventListener('scroll', handleScroll);
+      }
+      
+      // 清理表头事件监听
+      const tableHeader = document.querySelector(`.${props.classKey} .ant-table-thead`);
+      if (tableHeader) {
+        // 恢复表头样式
+        tableHeader.style.overflowX = '';
+        tableHeader.style.overflowY = '';
+        
+        // 移除事件监听器（由于使用了匿名函数，这里通过重新设置样式来清理）
+        tableHeader.removeEventListener('scroll', () => {});
+        tableHeader.removeEventListener('wheel', () => {});
       }
     });
     watch(
@@ -205,6 +245,12 @@ export default {
         }
       });
 
+      // 同步表头滚动位置
+      const tableHeader = document.querySelector(`.${props.classKey} .ant-table-thead`);
+      if (tableHeader && vb.value.scrollLeft !== tableHeader.scrollLeft) {
+        tableHeader.scrollLeft = vb.value.scrollLeft;
+      }
+
       // 计算高度
       const scrollTop = props.pageMode
         ? window.pageYOffset
@@ -219,6 +265,7 @@ export default {
       recordScrollTop.value = scrollTop;
       recordScrollLeft.value = vb.value.scrollLeft;
     }
+
     /**
      * 存在指定的盒子高度寻找开始的下表
      */
