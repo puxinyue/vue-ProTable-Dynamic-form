@@ -16,6 +16,9 @@
           <a-menu-item key="linkage">
             联动示例
           </a-menu-item>
+          <a-menu-item key="proform">
+            ProForm 联动示例
+          </a-menu-item>
           <a-menu-item key="complex">
             复杂表单示例
           </a-menu-item>
@@ -31,6 +34,9 @@
           <a-menu-item key="tooltip">
             提示功能示例
           </a-menu-item>
+          <a-menu-item key="editable-table">
+            可编辑表格示例
+          </a-menu-item>
         </a-menu>
       </a-layout-header>
       
@@ -39,11 +45,13 @@
         <div class="content-wrapper">
           <!-- 主版本 -->
           <LinkageExample v-if="currentExample === 'linkage'" />
+          <ProFormLinkageExample v-else-if="currentExample === 'proform'" />
           <ComplexExample v-else-if="currentExample === 'complex'" />
           <AsyncExample v-else-if="currentExample === 'async'" />
           <CustomComponentExample v-else-if="currentExample === 'custom'" />
           <LayoutExample v-else-if="currentExample === 'layout'" />
           <TooltipExample v-else-if="currentExample === 'tooltip'" />
+          <EditableTableExample v-else-if="currentExample === 'editable-table'" />
           
           <!-- 欢迎页面 -->
           <div
@@ -149,6 +157,12 @@
                   </a-button>
                   <a-button
                     size="large"
+                    @click="handleMenuSelect({ key: 'proform' })"
+                  >
+                    🚀 ProForm 联动
+                  </a-button>
+                  <a-button
+                    size="large"
                     @click="handleMenuSelect({ key: 'complex' })"
                   >
                     复杂表单示例
@@ -167,6 +181,14 @@
                     @click="handleMenuSelect({ key: 'custom' })"
                   >
                     🎨 自定义组件示例
+                  </a-button>
+                  <a-button
+                    type="dashed"
+                    size="large"
+                    style="background: #f6ffed; border-color: #52c41a; color: #389e0d;"
+                    @click="handleMenuSelect({ key: 'editable-table' })"
+                  >
+                    📊 可编辑表格示例
                   </a-button>
                 </a-space>
               </div>
@@ -189,11 +211,13 @@
 import { ref } from 'vue'
 // 主版本
 import LinkageExample from './examples/SimpleLinkageExample.vue'
+import ProFormLinkageExample from './examples/ProFormLinkageExample.vue'
 import ComplexExample from './examples/SimpleComplexExample.vue'
 import AsyncExample from './examples/AsyncExample.vue'
 import CustomComponentExample from './examples/CustomComponentExample.vue'
 import LayoutExample from './examples/LayoutExample.vue'
 import TooltipExample from './examples/TooltipExample.vue'
+import EditableTableExample from './examples/EditableTableExample.vue'
 
 const selectedKeys = ref<string[]>([])
 const currentExample = ref<string>('')
