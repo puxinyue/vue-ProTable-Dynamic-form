@@ -225,6 +225,8 @@ export interface PMProTableProps<T = any> extends TableProps<T> {
   onFilterListChange?: (filterList: Record<string, any>[]) => void
   // 开启虚拟滚动的话，建议把 classKey 写上唯一值，防止横向滚动 bug
   classKey?: string
+  // 表头选择器，用于指定表头元素的类名，默认为 '.ant-table-thead'
+  headerSelector?: string
   // 表格宽度
   tableWidth?: number
   // 表格的工具栏

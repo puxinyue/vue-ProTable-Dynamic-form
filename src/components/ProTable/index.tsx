@@ -1162,6 +1162,7 @@ export default defineComponent<PMProTableProps>(function PMProTable(_, {
                         customRow={customRow}
                         dataChangeWantSomething={attrs.dataChangeWantSomething}
                         bordered={attrs.bordered}
+                        headerSelector={attrs.headerSelector || '.ant-table-thead'}
                       />
                     )
                   }

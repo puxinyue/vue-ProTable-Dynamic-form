@@ -13,4 +13,5 @@ export interface VirtualListProps<RecordType = any> {
   customRow?: GetComponentProps<RecordType>
   dataChangeWantSomething?: boolean
   bordered?: boolean
+  headerSelector?: string
 }

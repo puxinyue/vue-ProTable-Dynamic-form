@@ -1,10 +1,14 @@
 <script lang="tsx">
-import { defineComponent, ref, reactive, computed, onMounted } from 'vue'
+import { defineComponent, ref, reactive, computed, onMounted, watch } from 'vue'
 import { Button, Input, Select, Switch, Space, message, InputNumber, Drawer, Table } from 'ant-design-vue'
 import { DeleteOutlined, ArrowUpOutlined, ArrowDownOutlined, PlusOutlined, DatabaseOutlined, ClearOutlined, EditOutlined } from '@ant-design/icons-vue'
 import PMProTable from '../components/ProTable'
 import type { PMProTableProps } from '../components/ProTable/types'
 import type { Key } from 'ant-design-vue/es/_util/type'
+import { generateColumns, getTableTypeOptions, type TableType } from '../utils/tableColumnConfig'
+import PartitionInputDialog from '../components/PartitionInputDialog/index.vue'
+import type { PartitionRecord } from '../components/PartitionInputDialog/index.vue'
+import type { DynamicPartitionConfig } from '../components/DynamicPartitionDialog/index.vue'
 
 // 数据类型定义
 interface TableDataItem {
@@ -16,6 +20,22 @@ interface TableDataItem {
   dataStandardCode: string
   isPrimaryKey: boolean
   isNotEmpty: boolean
+  // Doris特有字段
+  isBucketKey?: boolean      // 分桶字段
+  isAggregateKey?: boolean   // 聚合key
+  aggregateType?: string     // 聚合类型: SUM, REPLACE, MAX, MIN
+  isPartitionKey?: boolean   // 分区key
+  // Hive特有字段
+  isSortKey?: boolean        // 排序Key
+  // 动态分区配置
+  Dynamic?: {
+    enabled?: boolean
+    timeUnit?: string
+    startOffset?: number
+    endOffset?: number
+    prefix?: string
+    buckets?: number
+  }
   length?: number
   precision?: number
 }
@@ -40,10 +60,24 @@ export default defineComponent({
     // 数据源
     const dataSource = ref<TableDataItem[]>([])
 
+    // 表类型
+    const tableType = ref<TableType>('mysql')
+
     // 数据标准抽屉相关状态
     const drawerVisible = ref(false)
     const currentEditingRowId = ref<string>('')
     const selectedStandardItem = ref<DataStandardItem | null>(null)
+
+    // 分区录入弹窗相关状态
+    const partitionDialogVisible = ref(false)
+    const partitionDataSource = ref<PartitionRecord[]>([])
+
+    // 搜索相关状态
+    const searchValue = ref('')
+    const filteredDataSource = ref<TableDataItem[]>([])
+
+    // 表类型选项
+    const tableTypeOptions = getTableTypeOptions()
 
     // 数据标准列表
     const dataStandardList = ref<DataStandardItem[]>([
@@ -145,190 +179,36 @@ export default defineComponent({
       }
     })
 
-    // 表格列配置
-    const columns = computed(() => [
-      {
-        title: '序号',
-        dataIndex: 'serialNumber',
-        key: 'serialNumber',
-        width: 80,
-        // customRender: ({ record }: { record: TableDataItem }) => {
-        //   return (
-        //     <Input
-        //       value={record.serialNumber}
-        //       onChange={(e: Event) => handleCellChange(record.id, 'serialNumber', Number((e.target as HTMLInputElement).value))}
-        //       type="number"
-        //     />
-        //   )
-        // }
-      },
-      {
-        title: '字段英文名',
-        dataIndex: 'name',
-        key: 'name',
-        width: 150,
-        customRender: ({ record }: { record: TableDataItem }) => {
-          return (
-            <Input
-              showCount={true}
-              maxlength={40}
-              value={record.name}
-              onChange={(e: Event) => handleCellChange(record.id, 'name', (e.target as HTMLInputElement).value)}
-              placeholder="请输入字段英文名"
-            />
-          )
-        }
-      },
-      {
-        title: '字段中文名',
-        dataIndex: 'cname',
-        key: 'cname',
-        width: 150,
-        customRender: ({ record }: { record: TableDataItem }) => {
-          return (
-            <Input
-              showCount={true}
-              maxlength={40}
-              value={record.cname}
-              onChange={(e: Event) => handleCellChange(record.id, 'cname', (e.target as HTMLInputElement).value)}
-              placeholder="请输入字段中文名"
-            />
-          )
-        }
-      },
-      {
-        title: '数据类型',
-        dataIndex: 'dataType',
-        key: 'dataType',
-        width: 280,
-        customRender: ({ record }: { record: TableDataItem }) => {
-          return (
-            <div style={{ height: '100%', display: 'flex', gap: '2px', alignItems: 'center' }}>
-              <Select
-                value={record.dataType}
-                onChange={(value: any) => handleCellChange(record.id, 'dataType', value)}
-                options={dataTypeOptions}
-                style={{ width: shouldShowLength(record.dataType) || shouldShowPrecision(record.dataType) ? '120px' : '100%' }}
-              />
-              {shouldShowLength(record.dataType) && (
-                <InputNumber
-                  placeholder="长度"
-                  value={record.length}
-                  min={0}
-                  precision={0}
-                  style={{ width: '90px' }}
-                  onChange={(val: any) => {
-                    const parsed = (val === null || val === undefined || val === '') ? undefined : Number(val)
-                    handleCellChange(record.id, 'length', typeof parsed === 'number' && !Number.isNaN(parsed) ? parsed : undefined)
-                  }}
-                />
-              )}
-              {shouldShowPrecision(record.dataType) && (
-                <InputNumber
-                  placeholder="精度"
-                  value={record.precision}
-                  min={0}
-                  precision={0}
-                  style={{ width: '90px' }}
-                  onChange={(val: any) => {
-                    const parsed = (val === null || val === undefined || val === '') ? undefined : Number(val)
-                    handleCellChange(record.id, 'precision', typeof parsed === 'number' && !Number.isNaN(parsed) ? parsed : undefined)
-                  }}
-                />
-              )}
-            </div>
-          )
-        }
-      },
-      {
-        title: '数据标准',
-        dataIndex: 'dataStandardCode',
-        key: 'dataStandardCode',
-        tooltip: '选择需要引用的数据标准，字段属性将自动继承标准定义',
-        width: 150,
-        customRender: ({ record }: { record: TableDataItem }) => {
-          return (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {record.dataStandardCode || '未选择'}
-              </span>
-              <Button
-                type="link"
-                size="small"
-                icon={<EditOutlined />}
-                onClick={() => handleOpenDataStandardDrawer(record.id)}
-                title="选择数据标准"
-              />
-            </div>
-          )
-        }
-      },
-      {
-        title: '主键',
-        dataIndex: 'isPrimaryKey',
-        key: 'isPrimaryKey',
-        width: 80,
-        customRender: ({ record }: { record: TableDataItem }) => {
-          return (
-            <Switch
-              checked={record.isPrimaryKey}
-              onChange={(checked: any) => handleCellChange(record.id, 'isPrimaryKey', checked)}
-            />
-          )
-        }
-      },
-      {
-        title: '不为空',
-        dataIndex: 'isNotEmpty',
-        key: 'isNotEmpty',
-        width: 80,
-        customRender: ({ record }: { record: TableDataItem }) => {
-          return (
-            <Switch
-              checked={record.isNotEmpty}
-              onChange={(checked: any) => handleCellChange(record.id, 'isNotEmpty', checked)}
-            />
-          )
-        }
-      },
-      {
-        title: '操作',
-        dataIndex: 'action',
-        key: 'action',
-        fixed: 'right' as const,
-        width: 120,
-        customRender: ({ record, index }: { record: TableDataItem; index: number }) => {
-          return (
-            <Space>
-              <Button
-                type="link"
-                size="small"
-                icon={<ArrowUpOutlined />}
-                onClick={() => handleMoveUp(index)}
-                disabled={index === 0}
-                title="上移"
-              />
-              <Button
-                type="link"
-                size="small"
-                icon={<ArrowDownOutlined />}
-                onClick={() => handleMoveDown(index)}
-                disabled={index === dataSource.value.length - 1}
-                title="下移"
-              />
-              <Button
-                type="link"
-                size="small"
-                danger
-                icon={<DeleteOutlined />}
-                onClick={() => handleDelete(record.id)}
-                title="删除"
-              />
-            </Space>
-          )
-        }
+    // 检查字段英文名是否重复
+    const checkDuplicate = (currentRecord: TableDataItem, value: string) => {
+      if (!value || !value.trim()) {
+        return false
       }
-    ])
+      
+      // 查找所有具有相同字段名的记录（排除当前记录）
+      const duplicates = dataSource.value.filter(
+        item => item.name === value && item.id !== currentRecord.id
+      )
+      
+      return duplicates.length > 0
+    }
+
+    // 表格列配置 - 使用公共方法生成
+    const columns = computed(() => {
+      return generateColumns(tableType.value, {
+        dataTypeOptions,
+        shouldShowLength,
+        shouldShowPrecision,
+        handleCellChange: (id: string, field: string, value: any) => handleCellChange(id, field as keyof TableDataItem, value),
+        handleOpenDataStandardDrawer,
+        handleMoveUp,
+        handleMoveDown,
+        handleDelete,
+        getDataSourceLength: () => dataSource.value.length,
+        getDataSource: () => dataSource.value,
+        checkDuplicate: checkDuplicate
+      })
+    })
 
     const handleGenerateDDL = () => {
       console.log('生成DDL')
@@ -381,29 +261,132 @@ export default defineComponent({
       }
     }
 
+    // 搜索功能
+    const handleSearch = (value: string) => {
+      searchValue.value = value
+      if (!value.trim()) {
+        filteredDataSource.value = dataSource.value
+        return
+      }
+
+      const searchTerm = value.toLowerCase()
+      filteredDataSource.value = dataSource.value.filter(item => {
+        return (
+          item.name.toLowerCase().includes(searchTerm) ||
+          item.cname.toLowerCase().includes(searchTerm) ||
+          item.dataType.toLowerCase().includes(searchTerm) ||
+          item.dataStandardCode.toLowerCase().includes(searchTerm)
+        )
+      })
+    }
+
+    // 清空搜索
+    const handleClearSearch = () => {
+      searchValue.value = ''
+      filteredDataSource.value = dataSource.value
+    }
+
+    // 检查是否有分区Key
+    const hasPartitionKey = computed(() => {
+      return dataSource.value.some(item => item.isPartitionKey === true)
+    })
+
+    // 打开分区录入弹窗
+    const handleOpenPartitionDialog = () => {
+      partitionDialogVisible.value = true
+    }
+
+    // 获取分区字段列表
+    const getPartitionFields = computed(() => {
+      return dataSource.value
+        .filter(item => item.isPartitionKey === true)
+        .map(item => ({
+          name: item.name,
+          dataType: item.dataType,
+          length: item.length,
+          precision: item.precision
+        }))
+    })
+
+    // 保存分区数据
+    const handleSavePartitionData = (data: PartitionRecord[]) => {
+      partitionDataSource.value = data
+    //   message.success('分区数据保存成功')
+    }
+
+    // 处理动态分区配置提交
+    const handleDynamicPartitionSubmit = (config: DynamicPartitionConfig) => {
+      // 找到所有勾选了分区Key的字段，将Dynamic配置保存到这些字段所在的dataSource记录中
+      const partitionKeyItems = dataSource.value.filter(item => item.isPartitionKey === true)
+      
+      partitionKeyItems.forEach(item => {
+        item.Dynamic = {
+          enabled: config.enabled,
+          timeUnit: config.timeUnit,
+          startOffset: config.startOffset,
+          endOffset: config.endOffset,
+          prefix: config.prefix,
+          buckets: config.buckets
+        }
+      })
+      
+      message.success(`动态分区配置已应用到 ${partitionKeyItems.length} 个分区字段`)
+    }
+
     // 工具栏渲染
     const toolBarRender = () => {
       return (
-        <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '10px', gap: '8px' }}>
-          <Button type="primary" icon={<PlusOutlined />} onClick={handleAddRow}>
-            新增行
-          </Button>
-          <Button 
-            type="default" 
-            icon={<DatabaseOutlined />} 
-            onClick={handleGenerateDDL}
-            disabled={dataSource.value.length === 0}
-          >
-            DDL建表
-          </Button>
-          <Button 
-            danger 
-            icon={<ClearOutlined />} 
-            onClick={handleBatchDelete}
-            disabled={rowSelection.selectedRowKeys.length === 0}
-          >
-            批量删除 ({rowSelection.selectedRowKeys.length})
-          </Button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <span style={{ fontSize: '14px', fontWeight: 'bold', marginRight: '8px' }}>表类型:</span>
+            <Select
+              value={tableType.value}
+              onChange={(value: any) => { tableType.value = value }}
+              options={tableTypeOptions}
+              style={{ width: '120px' }}
+            />
+            <Button type="primary" icon={<PlusOutlined />} onClick={handleAddRow}>
+              新增行
+            </Button>
+            <Button 
+              type="default" 
+              icon={<DatabaseOutlined />} 
+              onClick={handleGenerateDDL}
+              disabled={dataSource.value.length === 0}
+            >
+              DDL建表
+            </Button>
+            {hasPartitionKey.value && (
+              <Button 
+                type="default" 
+                icon={<DatabaseOutlined />} 
+                onClick={handleOpenPartitionDialog}
+              >
+                分区录入
+              </Button>
+            )}
+            <Button 
+              danger 
+              icon={<ClearOutlined />} 
+              onClick={handleBatchDelete}
+              disabled={rowSelection.selectedRowKeys.length === 0}
+            >
+              批量删除 ({rowSelection.selectedRowKeys.length})
+            </Button>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Input.Search
+              placeholder="搜索字段名、中文名、数据类型..."
+              value={searchValue.value}
+              onChange={(e) => handleSearch(e.target.value || '')}
+              onSearch={(value) => handleSearch(value)}
+              allowClear
+              style={{ width: '300px' }}
+            />
+            <span style={{ color: '#666', fontSize: '12px' }}>
+              {searchValue.value ? `找到 ${filteredDataSource.value.length} 条结果` : `共 ${dataSource.value.length} 条数据`}
+            </span>
+          </div>
         </div>
       )
     }
@@ -421,7 +404,7 @@ export default defineComponent({
     const handleCellChange = (id: string, field: keyof TableDataItem, value: any) => {
       const index = dataSource.value.findIndex(item => item.id === id)
       if (index !== -1) {
-        const row = { ...dataSource.value[index], [field]: value } as TableDataItem
+        const row = { ...dataSource.value[index] } as TableDataItem
         // 数据类型联动：重置不需要的字段
         if (field === 'dataType') {
           if (!shouldShowLength(value)) row.length = undefined
@@ -431,6 +414,60 @@ export default defineComponent({
         if (field === 'length' || field === 'precision' || field === 'dataType') {
           ensureLenGtePrec(row)
         }
+        
+        // 更新字段值
+        if (field === 'isPrimaryKey') row.isPrimaryKey = value
+        else if (field === 'isNotEmpty') row.isNotEmpty = value
+        else if (field === 'name') {
+          row.name = value
+          // 检查字段名重复性
+          if (value && value.trim()) {
+            const duplicates = dataSource.value.filter(
+              item => item.name === value && item.id !== id
+            )
+            if (duplicates.length > 0) {
+              const duplicateRows = duplicates.map(item => {
+                const index = dataSource.value.findIndex(row => row.id === item.id)
+                return index + 1
+              })
+              message.warning(`字段名重复，已在第 ${duplicateRows.join('、')} 行使用`)
+            }
+          }
+        }
+        else if (field === 'cname') row.cname = value
+        else if (field === 'dataType') row.dataType = value
+        else if (field === 'dataStandardCode') row.dataStandardCode = value
+        else if (field === 'length') row.length = value
+        else if (field === 'precision') row.precision = value
+        else if (field === 'isBucketKey') {
+          row.isBucketKey = value
+          // 如果选择了分桶字段，自动清除聚合类型
+          if (value && row.aggregateType) {
+            row.aggregateType = undefined
+          }
+        }
+        else if (field === 'isAggregateKey') {
+          row.isAggregateKey = value
+          // 如果选择了聚合Key，自动清除聚合类型
+          if (value && row.aggregateType) {
+            row.aggregateType = undefined
+          }
+        }
+        else if (field === 'aggregateType') {
+          row.aggregateType = value
+          // 如果选择了聚合类型，自动清除聚合Key和分桶字段
+          if (value) {
+            if (row.isAggregateKey) {
+              row.isAggregateKey = false
+            }
+            if (row.isBucketKey) {
+              row.isBucketKey = false
+            }
+          }
+        }
+        else if (field === 'isPartitionKey') row.isPartitionKey = value
+        else if (field === 'isSortKey') row.isSortKey = value
+        
         dataSource.value[index] = row
         // 如果是序号字段，需要重新排序
         if (field === 'serialNumber') {
@@ -461,6 +498,19 @@ export default defineComponent({
         length: 255,
         precision: undefined
       }
+      
+      // 根据表类型初始化特殊字段
+      if (tableType.value === 'doris') {
+        newRow.isBucketKey = false
+        newRow.isAggregateKey = false
+        newRow.aggregateType = undefined
+        newRow.isPartitionKey = false
+      } else if (tableType.value === 'hive') {
+        newRow.isPartitionKey = false
+      } else if (tableType.value === 'clickhouse') {
+        newRow.isSortKey = false
+      }
+      
       dataSource.value.unshift(newRow)
       message.success('新增行成功')
     }
@@ -529,7 +579,7 @@ export default defineComponent({
       const testData: TableDataItem[] = []
       for (let i = 1; i <= 100; i++) {
         const t = dataTypeOptions[i % dataTypeOptions.length].value as string
-        testData.push({
+        const baseData = {
           id: `test_${i}`,
           serialNumber: i,
           name: `field_${i}`,
@@ -540,7 +590,22 @@ export default defineComponent({
           isNotEmpty: i <= 10,
           length: shouldShowLength(t) ? (t === 'DECIMAL' ? 10 : 255) : undefined,
           precision: shouldShowPrecision(t) ? 2 : undefined
-        })
+        }
+        
+        // 根据当前表类型添加特殊字段
+        if (tableType.value === 'doris') {
+          (baseData as TableDataItem).isBucketKey = i <= 5
+          ;(baseData as TableDataItem).isAggregateKey = i <= 3
+          // 注意：不自动设置聚合类型，因为它们是互斥的
+          // ;(baseData as TableDataItem).aggregateType = i <= 2 ? 'SUM' : undefined
+          ;(baseData as TableDataItem).isPartitionKey = i === 1
+        } else if (tableType.value === 'hive') {
+          ;(baseData as TableDataItem).isPartitionKey = i === 1
+        } else if (tableType.value === 'clickhouse') {
+          ;(baseData as TableDataItem).isSortKey = i <= 3
+        }
+        
+        testData.push(baseData as TableDataItem)
       }
       dataSource.value = testData
     }
@@ -548,6 +613,45 @@ export default defineComponent({
     // 组件挂载时初始化数据
     onMounted(() => {
       initTestData()
+      // 初始化过滤数据
+      filteredDataSource.value = dataSource.value
+    })
+
+    // 监听数据源变化，更新过滤结果
+    watch(() => dataSource.value, () => {
+      if (searchValue.value) {
+        handleSearch(searchValue.value)
+      } else {
+        filteredDataSource.value = dataSource.value
+      }
+    }, { deep: true })
+
+    // 监听表类型变化，重新初始化数据
+    watch(() => tableType.value, () => {
+      if (dataSource.value.length > 0) {
+        // 保留现有的基础数据，只更新特殊字段
+        dataSource.value.forEach((item, index) => {
+          // 清除所有特殊字段
+          item.isBucketKey = false
+          item.isAggregateKey = false
+          item.aggregateType = undefined
+          item.isPartitionKey = false
+          item.isSortKey = false
+          
+          // 根据当前表类型初始化对应字段
+          if (tableType.value === 'doris') {
+            item.isBucketKey = index < 5
+            // 注意：不自动设置聚合Key和聚合类型，因为它们是互斥的
+            // item.isAggregateKey = index < 3
+            // item.aggregateType = index < 2 ? 'SUM' : undefined
+            item.isPartitionKey = index === 0
+          } else if (tableType.value === 'hive') {
+            item.isPartitionKey = index === 0
+          } else if (tableType.value === 'clickhouse') {
+            item.isSortKey = index < 3
+          }
+        })
+      }
     })
 
     // 数据标准抽屉的列配置
@@ -596,15 +700,21 @@ export default defineComponent({
       }
     ]
 
+    // 获取数据
+    const handleGetData = () => {
+      console.log(dataSource.value)
+    }
+
     // 返回渲染函数
     return () => {
       return (
         <div class="editable-table-example">
           <h2>可编辑表格示例（虚拟列表）</h2>
+          <Button type="primary" onClick={handleGetData}>获取数据</Button>
           <PMProTable
             ref={proTableRef}
             columns={columns.value}
-            dataSource={dataSource.value}
+            dataSource={searchValue.value ? filteredDataSource.value : dataSource.value}
             search={false}
             isVirtual={true}
             rowHeight={40}
@@ -668,6 +778,15 @@ export default defineComponent({
               }}
             />
           </Drawer>
+
+          {/* 分区录入弹窗 */}
+          <PartitionInputDialog
+            v-model:visible={partitionDialogVisible.value}
+            selectedFields={getPartitionFields.value}
+            dataSource={partitionDataSource.value}
+            onSave={handleSavePartitionData}
+            onDynamicPartition={handleDynamicPartitionSubmit}
+          />
         </div>
       )
     }
@@ -683,5 +802,8 @@ export default defineComponent({
 .editable-table-example h2 {
   margin-bottom: 20px;
   color: #1890ff;
+}
+:deep(.ant-input-search-button) {
+  height: 29px;
 }
 </style>

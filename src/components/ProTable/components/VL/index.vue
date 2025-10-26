@@ -43,7 +43,8 @@ import {
   onMounted,
   onUnmounted,
   computed,
-  onActivated
+  onActivated,
+  defineComponent
 } from 'vue';
 import { Empty } from 'ant-design-vue';
 
@@ -76,6 +77,11 @@ export default {
     },
     classKey: {
       type: String
+    },
+    // 表头选择器，用于动态指定表头元素的类名
+    headerSelector: {
+      type: String,
+      default: '.ant-table-thead'
     },
     initEmptyQuery: {
       type: Boolean
@@ -132,7 +138,7 @@ export default {
       
       // 禁止表头单独滚动
       nextTick(() => {
-        const tableHeader = document.querySelector(`.${props.classKey} .ant-table-thead`);
+        const tableHeader = document.querySelector(`.${props.classKey} ${props.headerSelector}`);
         if (tableHeader) {
           // 禁止表头滚动
           tableHeader.style.overflowX = 'hidden';
@@ -183,7 +189,7 @@ export default {
       }
       
       // 清理表头事件监听
-      const tableHeader = document.querySelector(`.${props.classKey} .ant-table-thead`);
+      const tableHeader = document.querySelector(`.${props.classKey} ${props.headerSelector}`);
       if (tableHeader) {
         // 恢复表头样式
         tableHeader.style.overflowX = '';
@@ -246,7 +252,7 @@ export default {
       });
 
       // 同步表头滚动位置
-      const tableHeader = document.querySelector(`.${props.classKey} .ant-table-thead`);
+      const tableHeader = document.querySelector(`.${props.classKey} ${props.headerSelector}`);
       if (tableHeader && vb.value.scrollLeft !== tableHeader.scrollLeft) {
         tableHeader.scrollLeft = vb.value.scrollLeft;
       }
@@ -433,5 +439,5 @@ export default {
       handleScroll
     };
   }
-};
+}
 </script>
